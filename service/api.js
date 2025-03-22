@@ -16,7 +16,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "quan_ly_giai_dau",
+    database: "quan_ly_giai_dau_1",
 });
 
 // Kiểm tra kết nối
@@ -30,19 +30,20 @@ db.connect((err) => {
 
 // Danh sách bảng và khóa chính tương ứng
 const tables = {
-    "tai_khoan": ["tai_khoan"],         // 
-    "vai_tro": ["ma_vai_tro"],           //
-    "nguoi_dung": ["ma_nguoi_dung"],      // có nên thay thế bằng tài khoản ko 
-    "giai_dau": ["ma_giai_dau"],          // 
-    "doi_bong": ["ma_doi_bong"],          // thay thế băng mã huấn luyện viên
-    "vi_tri": ["ma_vi_tri"],              // 
-    "cau_thu": ["ma_cau_thu"],            // 
-    "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // khóa phụ: ma_giai_dau, ma_doi_bong
-    "tran_dau": ["ma_tran_dau"],            // 
-    "ket_qua_tran_dau": ["ma_ket_qua"],        // hình nhu thay thế banwgf mã ma_tran_dau
-    "loai_su_kien": ["ma_loai_su_kien"],        // khóa phụ: ten_loai_su_kien
-    "su_kien_tran_dau": ["ma_su_kien"],       // 
-    "bang_xep_hang": ["ma_xep_hang"]    // khóa phujj ma_giai_dau, ma_doi_bong
+    "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
+    "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
+    "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
+    "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
+    "doi_bong": ["ma_doi_bong"],          // Khóa chính là mã đội bóng
+    "vi_tri_cau_thu": ["ma_vi_tri"],      // Đổi tên từ "vi_tri" thành "vi_tri_cau_thu" để khớp với CSDL
+    "cau_thu": ["ma_cau_thu"],            // Khóa chính là mã cầu thủ
+    "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
+    "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
+    "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
+    "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
+    "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
+    "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
+    "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
 };
 
 Object.entries(tables).forEach(([table, keys]) => {

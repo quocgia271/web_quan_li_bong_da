@@ -292,19 +292,20 @@ async function taoID_theoBang(table) {
 function them(data, table_name) {
 
     const primaryKeys = {
-        "ban_an": ["id"],
-        "cau_hinh_giao_dien": ["id"],
-        "chi_tiet_don_dat_ban": ["id"],
-        "danh_gia": ["id"],
-        "dau_bep": ["id"],
-        "don_dat_ban": ["id"],
-        "loai_nha_hang": ["id"],
-        "nguoi_dung": ["id"],
-        "nha_hang": ["id"],
-        "thuc_don": ["id"],
-        "trung_tam": ["id"],
-
-        // "chi_tiet_don_dat_ban": ["don_dat_ban_id", "ban_an_id"],
+        "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
+        "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
+        "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
+        "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
+        "doi_bong": ["ma_doi_bong"],          // Khóa chính là mã đội bóng
+        "vi_tri_cau_thu": ["ma_vi_tri"],      // Đổi tên từ "vi_tri" thành "vi_tri_cau_thu" để khớp với CSDL
+        "cau_thu": ["ma_cau_thu"],            // Khóa chính là mã cầu thủ
+        "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
+        "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
+        "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
+        "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
+        "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
+        "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
+        "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
 
     }[table_name];
 
@@ -344,19 +345,20 @@ function them(data, table_name) {
 function sua(data, table_name) {
 
     const primaryKeys = {
-        "ban_an": ["id"],
-        "cau_hinh_giao_dien": ["id"],
-        "chi_tiet_don_dat_ban": ["id"],
-        "danh_gia": ["id"],
-        "dau_bep": ["id"],
-        "don_dat_ban": ["id"],
-        "loai_nha_hang": ["id"],
-        "nguoi_dung": ["id"],
-        "nha_hang": ["id"],
-        "thuc_don": ["id"],
-        "trung_tam": ["id"],
-
-        // "chi_tiet_don_dat_ban": ["don_dat_ban_id", "ban_an_id"],
+        "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
+    "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
+    "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
+    "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
+    "doi_bong": ["ma_doi_bong"],          // Khóa chính là mã đội bóng
+    "vi_tri_cau_thu": ["ma_vi_tri"],      // Đổi tên từ "vi_tri" thành "vi_tri_cau_thu" để khớp với CSDL
+    "cau_thu": ["ma_cau_thu"],            // Khóa chính là mã cầu thủ
+    "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
+    "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
+    "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
+    "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
+    "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
+    "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
+    "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
 
     }[table_name];
 
@@ -412,19 +414,20 @@ function sua(data, table_name) {
 function xoa(keys, table_name) {
 
     const primaryKeys = {
-        "ban_an": ["id"],
-        "cau_hinh_giao_dien": ["id"],
-        "chi_tiet_don_dat_ban": ["id"],
-        "danh_gia": ["id"],
-        "dau_bep": ["id"],
-        "don_dat_ban": ["id"],
-        "loai_nha_hang": ["id"],
-        "nguoi_dung": ["id"],
-        "nha_hang": ["id"],
-        "thuc_don": ["id"],
-        "trung_tam": ["id"],
-
-        // "chi_tiet_don_dat_ban": ["don_dat_ban_id", "ban_an_id"],
+        "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
+        "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
+        "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
+        "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
+        "doi_bong": ["ma_doi_bong"],          // Khóa chính là mã đội bóng
+        "vi_tri_cau_thu": ["ma_vi_tri"],      // Đổi tên từ "vi_tri" thành "vi_tri_cau_thu" để khớp với CSDL
+        "cau_thu": ["ma_cau_thu"],            // Khóa chính là mã cầu thủ
+        "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
+        "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
+        "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
+        "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
+        "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
+        "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
+        "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
 
     }[table_name];
 
