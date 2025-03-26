@@ -1,10 +1,24 @@
+const btnLuuThayDoi = document.getElementById("button_luu");
+const btnTaiLaiTrang = document.getElementById("button_taiLaiTrang");
+
+const maDoiBong = document.getElementById("maDoiBong");
+const tenDoiBong = document.getElementById("tenDoiBong");
+const quocGia = document.getElementById("quocGia");
+const maGioiTinh = document.getElementById("maGioiTinh");
+const logo = document.getElementById("logo");
+const maQlDoiBong = document.getElementById("maQlDoiBong");
+
 document.addEventListener("DOMContentLoaded", function () {
+    loadDanhSachNguoiDung_quanLyDoiBong();
     viewTbody();
+    // console.log(loadDanhSachNguoiDung_quanLyDoiBong());
+    btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
+    btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 });
 
-// Hàm lấy danh sách đội bóng
+// Hiển thị danh sách đội bóng
 async function viewTbody() {
-    const data = await hamChung.layDanhSach("doi_bong"); // Gọi API lấy danh sách đội bóng
+    const data = await hamChung.layDanhSach("doi_bong");
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
@@ -28,29 +42,97 @@ async function viewTbody() {
     button_xoa(data);
 }
 
-// Hàm xử lý sự kiện sửa đội bóng
+// Thêm/Sửa đội bóng
+async function handleLuuThayDoi(event) {
+    event.preventDefault();
+
+    const form = document.getElementById("inputForm");
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    let formData = {};
+    if (maDoiBong.value === "") {
+        formData = {
+            ma_doi_bong: await hamChung.taoID_theoBang("doi_bong"),
+            ten_doi_bong: tenDoiBong.value,
+            quoc_gia: quocGia.value,
+            gioi_tinh: maGioiTinh.value,
+            logo: logo.value,
+            ma_ql_doi_bong: maQlDoiBong.value
+        };
+        await hamChung.them(formData, "doi_bong");
+        alert("Thêm thành công!");
+    } else {
+        formData = {
+            ma_doi_bong: maDoiBong.value,
+            ten_doi_bong: tenDoiBong.value,
+            quoc_gia: quocGia.value,
+            gioi_tinh: maGioiTinh.value,
+            logo: logo.value,
+            ma_ql_doi_bong: maQlDoiBong.value
+        };
+        await hamChung.sua(formData, "doi_bong");
+        alert("Sửa thành công!");
+    }
+    console.log(formData);
+    viewTbody();
+}
+
+// Xử lý tải lại trang
+function handleTaiLaiTrang(event) {
+    event.preventDefault();
+    location.reload();
+}
+
+// Xử lý nút "Sửa"
 function button_sua(data) {
     document.querySelectorAll(".edit-btn").forEach((btn, index) => {
         btn.addEventListener("click", () => {
             const item = data[index];
-            document.getElementById("maDoiBong").value = item.ma_doi_bong;
-            document.getElementById("tenDoiBong").value = item.ten_doi_bong;
-            document.getElementById("quocGia").value = item.quoc_gia;
-            document.getElementById("maGioiTinh").value = item.gioi_tinh;
-            document.getElementById("logo").value = item.logo;
-            document.getElementById("maQlDoiBong").value = item.ma_ql_doi_bong;
+            maDoiBong.value = item.ma_doi_bong;
+            tenDoiBong.value = item.ten_doi_bong;
+            quocGia.value = item.quoc_gia;
+            maGioiTinh.value = item.gioi_tinh;
+            logo.value = item.logo;
+            maQlDoiBong.value = item.ma_ql_doi_bong;
         });
     });
 }
 
-// Hàm xử lý sự kiện xóa đội bóng
+// Xử lý nút "Xóa"
 function button_xoa(data) {
     document.querySelectorAll(".delete-btn").forEach((btn, index) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
             if (confirm(`Bạn có chắc chắn muốn xóa đội bóng ${data[index].ten_doi_bong}?`)) {
-                data.splice(index, 1);
+                const formData = { ma_doi_bong: data[index].ma_doi_bong };
+                await hamChung.xoa(formData, "doi_bong");
                 viewTbody();
             }
         });
+    });
+}
+
+
+async function loadDanhSachNguoiDung_quanLyDoiBong() {
+    const selectElement = document.getElementById("maQlDoiBong");
+    selectElement.innerHTML = '<option value="">-- Chưa Nhập --</option>'; // Reset danh sách
+
+    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
+    const dataNguoiDung = await hamChung.layDanhSach("nguoi_dung");
+
+    // Lọc danh sách tài khoản có ma_vai_tro === 3
+    const taiKhoanQuanLyDoiBong = dataTaiKhoan.filter(tk => tk.ma_vai_tro === 3);
+
+    // Lọc danh sách người dùng có tài khoản trong nhóm trên
+    const nguoiDungQuanLyDoiBong = dataNguoiDung.filter(nd =>
+        taiKhoanQuanLyDoiBong.some(tk => tk.tai_khoan === nd.tai_khoan)
+    );
+    nguoiDungQuanLyDoiBong.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_nguoi_dung;
+        option.textContent = `${item.ma_nguoi_dung} - ${item.ho_ten}`;
+        selectElement.appendChild(option);
     });
 }

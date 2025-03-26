@@ -53,12 +53,13 @@
 						<a class="nav-link" href="http://127.0.0.1:5500/public/src/views/banhang.html">Bán
 							hàng</a>
 
+
 						<div class="sb-sidenav-menu-heading">Giải Đấu</div>
 						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
 							data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-columns"></i>
-							</div> Quản Lý
+							</div> Giải Đấu
 							<div class="sb-sidenav-collapse-arrow">
 								<i class="fas fa-angle-down"></i>
 							</div>
@@ -66,14 +67,23 @@
 						<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/bangDau.html">Bảng Đấu</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/bangXepHangVongLoai.html">Bảng Xếp Hạng Vòng Loại</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/giaiDau.html">Giải Đấu</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/vongDau.html">Vòng Đấu</a>		
+								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/giaiDau.html">Giải
+									Đấu</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/bangDau.html">Bảng
+									Đấu</a>
+								<a class="nav-link"
+									href="/frontend/view/quanly_admin/giai_dau/bangXepHangVongLoai.html">Bảng Xếp Hạng
+									Vòng Loại</a>
+
+								<a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/vongDau.html">Vòng
+									Đấu</a>
 							</nav>
 						</div>
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-							aria-expanded="false" aria-controls="collapsePages">
+
+						<!-- <div class="sb-sidenav-menu-heading">Đội Bóng</div> -->
+						<!-- ĐỘI BÓNG -->
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTeams"
+							aria-expanded="false" aria-controls="collapseTeams">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-book-open"></i>
 							</div> Đội Bóng
@@ -81,19 +91,22 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+						<div class="collapse" id="collapseTeams" aria-labelledby="headingTeams"
 							data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+							<nav class="sb-sidenav-menu-nested nav accordion">
 								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/cau_thu.html">Cầu Thủ</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/cauThu_giaiDau.html">Cầu Thủ Giải Đấu</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/doiBong.html">Đội Bóng</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/viTriCauThu.html">Vị Trí Cầu Thủ</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/cauThu_giaiDau.html">Cầu
+									Thủ Giải Đấu</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/doiBong.html">Đội
+									Bóng</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/viTriCauThu.html">Vị Trí
+									Cầu Thủ</a>
 							</nav>
 						</div>
 
-
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-							aria-expanded="false" aria-controls="collapsePages">
+						<!-- NGƯỜI DÙNG -->
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers"
+							aria-expanded="false" aria-controls="collapseUsers">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-book-open"></i>
 							</div> Người Dùng
@@ -101,18 +114,21 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+						<div class="collapse" id="collapseUsers" aria-labelledby="headingUsers"
 							data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/nguoiDung.html">Người Dùng</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/tai_khoan.html">Tài Khoản</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/vaiTro.html">Vai Trò</a>
-
+							<nav class="sb-sidenav-menu-nested nav accordion">
+								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/nguoiDung.html">Người
+									Dùng</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/tai_khoan.html">Tài
+									Khoản</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/nguoi_dung/vaiTro.html">Vai
+									Trò</a>
 							</nav>
 						</div>
 
-						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-							aria-expanded="false" aria-controls="collapsePages">
+						<!-- TRẬN ĐẤU -->
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+							data-bs-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-book-open"></i>
 							</div> Trận Đấu
@@ -120,14 +136,18 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+						<div class="collapse" id="collapseMatches" aria-labelledby="headingMatches"
 							data-bs-parent="#sidenavAccordion">
-							<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">	
-								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/tranDau.html">Trận Đấu</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/trongTai.html">Trọng Tài</a>
-								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/ketQuaTranDau.html">Kết Quả Trận Đấu</a>
+							<nav class="sb-sidenav-menu-nested nav accordion">
+								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/tranDau.html">Trận
+									Đấu</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/trongTai.html">Trọng
+									Tài</a>
+								<a class="nav-link" href="/frontend/view/quanly_admin/tran_dau/ketQuaTranDau.html">Kết
+									Quả Trận Đấu</a>
 							</nav>
 						</div>
+
 
 
 

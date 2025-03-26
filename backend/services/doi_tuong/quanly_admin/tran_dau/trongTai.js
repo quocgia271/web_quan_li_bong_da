@@ -1,7 +1,19 @@
+const btnLuuThayDoi = document.getElementById("button_luu");
+const btnTaiLaiTrang = document.getElementById("button_taiLaiTrang");
+
+const maTrongTai = document.getElementById("maTrongTai");
+const hoTen = document.getElementById("hoTen");
+const ngaySinh = document.getElementById("ngaySinh");
+const maGioiTinh = document.getElementById("maGioiTinh");
+const hinhAnh = document.getElementById("hinhAnh");
+
 document.addEventListener("DOMContentLoaded", function () {
     viewTbody();
+    btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
+    btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 });
 
+// Hiển thị danh sách trọng tài
 async function viewTbody() {
     const data = await hamChung.layDanhSach("trong_tai");
     console.log(data);
@@ -28,24 +40,69 @@ async function viewTbody() {
     button_xoa(data);
 }
 
+// Thêm/Sửa trọng tài
+async function handleLuuThayDoi(event) {
+    event.preventDefault();
+
+    const form = document.getElementById("inputForm");
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    let formData = {};
+    if (maTrongTai.value === "") {
+        formData = {
+            ma_trong_tai: await hamChung.taoID_theoBang("trong_tai"),
+            ho_ten: hoTen.value,
+            ngay_sinh: ngaySinh.value,
+            gioi_tinh: maGioiTinh.value,
+            hinh_anh: hinhAnh.value
+        };
+        await hamChung.them(formData, "trong_tai");
+        alert("Thêm thành công!");
+    } else {
+        formData = {
+            ma_trong_tai: maTrongTai.value,
+            ho_ten: hoTen.value,
+            ngay_sinh: ngaySinh.value,
+            gioi_tinh: maGioiTinh.value,
+            hinh_anh: hinhAnh.value
+        };
+        await hamChung.sua(formData, "trong_tai");
+        alert("Sửa thành công!");
+    }
+    console.log(formData);
+    viewTbody();
+}
+
+// Xử lý tải lại trang
+function handleTaiLaiTrang(event) {
+    event.preventDefault();
+    location.reload();
+}
+
+// Xử lý nút "Sửa"
 function button_sua(data) {
     document.querySelectorAll(".edit-btn").forEach((btn, index) => {
         btn.addEventListener("click", () => {
             const item = data[index];
-            document.getElementById("maTrongTai").value = item.ma_trong_tai;
-            document.getElementById("hoTen").value = item.ho_ten;
-            document.getElementById("ngaySinh").value = item.ngay_sinh;
-            document.getElementById("maGioiTinh").value = item.gioi_tinh;
-            document.getElementById("hinhAnh").value = item.hinh_anh;
+            maTrongTai.value = item.ma_trong_tai;
+            hoTen.value = item.ho_ten;
+            ngaySinh.value = item.ngay_sinh;
+            maGioiTinh.value = item.gioi_tinh;
+            hinhAnh.value = item.hinh_anh;
         });
     });
 }
 
+// Xử lý nút "Xóa"
 function button_xoa(data) {
     document.querySelectorAll(".delete-btn").forEach((btn, index) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
             if (confirm(`Bạn có chắc chắn muốn xóa trọng tài ${data[index].ho_ten}?`)) {
-                data.splice(index, 1);
+                const formData = { ma_trong_tai: data[index].ma_trong_tai };
+                await hamChung.xoa(formData, "trong_tai");
                 viewTbody();
             }
         });

@@ -55,26 +55,37 @@
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRẬN ĐẤU</label>
                 </div>
                 <div class="card-header">
-                    <form:form class="row mb-3" modelAttribute="matchEntity" action="" method="post">
+                    <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trận Đấu</label>
-                            <input path="maTranDau" type="text" class="form-control" id="maTranDau" required />
+                            <input path="maTranDau" type="text" class="form-control" id="maTranDau" required readonly />
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
                             <input path="maGiaiDau" type="text" class="form-control" id="maGiaiDau" />
+                        </div> -->
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau">
+                                <option value="">-- Chọn Giải Đấu --</option>
+                            </select>
                         </div>
-
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Đội 1</label>
-                            <input path="maDoi1" type="text" class="form-control" id="maDoi1" />
+                            <select class="form-control" id="maDoi1">
+                                <option value="">-- Chọn Đội 1 --</option>
+                            </select>
                         </div>
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Đội 2</label>
-                            <input path="maDoi2" type="text" class="form-control" id="maDoi2" />
+                            <select class="form-control" id="maDoi2">
+                                <option value="">-- Chọn Đội 2 --</option>
+                            </select>
                         </div>
+
+
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Diễn Ra</label>
@@ -91,9 +102,16 @@
                             <input path="sanVanDong" type="text" class="form-control" id="sanVanDong" required />
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trọng Tài</label>
                             <input path="maTrongTai" type="text" class="form-control" id="maTrongTai" />
+                        </div> -->
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Mã Trọng Tài Chính</label>
+                            <select class="form-control" id="maTrongTai">
+                                <option value="">-- Chọn Trọng Tài --</option>
+                            </select>
                         </div>
 
                         <div class="col-md-3">
@@ -105,9 +123,15 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Vòng Đấu</label>
                             <input path="maVongDau" type="text" class="form-control" id="maVongDau" />
+                        </div> -->
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Mã Vòng Đấu</label>
+                            <select class="form-control" id="maVongDau">
+                                <option value="">-- Chọn Vòng Đấu --</option>
+                            </select>
                         </div>
 
                         <div class='parent col-md-12 mt-3'>
@@ -193,7 +217,7 @@
     <script src="/backend/services/doi_tuong/quanly_admin/tran_dau/tranDau.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
-
+    <!-- <script type="module" src="/frontend/public/src/common/quanly/header.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->

@@ -268,10 +268,11 @@ async function taoID_theoBang(table) {
 
         // Tìm ID lớn nhất trong danh sách
         const lastID = danhSach
-            .map(item => item.id)
-            .filter(id => id.startsWith(prefix)) // Lọc đúng prefix
-            .sort()
-            .pop(); // Lấy ID lớn nhất
+        .map(item => item?.id) // Dùng optional chaining để tránh lỗi
+        .filter(id => typeof id === "string" && id.startsWith(prefix)) // Kiểm tra kiểu dữ liệu
+        .sort()
+        .pop();
+    
 
         if (!lastID) {
             return `${prefix}0001`; // Nếu không tìm thấy ID hợp lệ
@@ -345,7 +346,7 @@ function them(data, table_name) {
 function sua(data, table_name) {
 
     const primaryKeys = {
-        "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
+    "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
     "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
     "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
     "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
@@ -411,68 +412,72 @@ function sua(data, table_name) {
             alert(`Lỗi: ${error.message}`);
         });
 }
-function xoa(keys, table_name) {
+async function xoa(keys, table_name) {
+    const primaryKeysMap = {
+        "tai_khoan": ["tai_khoan"],
+        "vai_tro": ["ma_vai_tro"],
+        "nguoi_dung": ["ma_nguoi_dung"],
+        "giai_dau": ["ma_giai_dau"],
+        "doi_bong": ["ma_doi_bong"],
+        "vi_tri_cau_thu": ["ma_vi_tri"],
+        "cau_thu": ["ma_cau_thu"],
+        "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"],
+        "vong_dau": ["ma_vong_dau"],
+        "tran_dau": ["ma_tran_dau"],
+        "ket_qua_tran_dau": ["ma_tran_dau"],
+        "trong_tai": ["ma_trong_tai"],
+        "bang_dau": ["ma_bang_dau"],
+        "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"]
+    };
 
-    const primaryKeys = {
-        "tai_khoan": ["tai_khoan"],         // Khóa chính là tài khoản
-        "vai_tro": ["ma_vai_tro"],           // Khóa chính là mã vai trò
-        "nguoi_dung": ["ma_nguoi_dung"],      // Giữ mã người dùng thay vì tài khoản vì có thể có thông tin bổ sung
-        "giai_dau": ["ma_giai_dau"],          // Khóa chính là mã giải đấu
-        "doi_bong": ["ma_doi_bong"],          // Khóa chính là mã đội bóng
-        "vi_tri_cau_thu": ["ma_vi_tri"],      // Đổi tên từ "vi_tri" thành "vi_tri_cau_thu" để khớp với CSDL
-        "cau_thu": ["ma_cau_thu"],            // Khóa chính là mã cầu thủ
-        "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
-        "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
-        "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
-        "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
-        "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
-        "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
-        "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
-
-    }[table_name];
-
-    if (!keys) {
-        console.error("Thiếu thông tin khóa chính để xóa!");
-        alert("Thiếu thông tin khóa chính để xóa!");
-        return;
-    }
-
-
+    // Kiểm tra xem bảng có hợp lệ không
+    const primaryKeys = primaryKeysMap[table_name];
     if (!primaryKeys) {
         console.error(`Bảng ${table_name} không hợp lệ.`);
         alert("Bảng không hợp lệ!");
         return;
     }
 
+    // Kiểm tra `keys` có hợp lệ không
+    if (!keys || typeof keys !== "object") {
+        console.error("Thiếu thông tin khóa chính để xóa!", keys);
+        alert("Thiếu thông tin khóa chính để xóa!");
+        return;
+    }
+
+    // Lấy danh sách giá trị của khóa chính
     const keyValues = primaryKeys.map(key => keys[key]);
-    if (keyValues.some(value => value === undefined)) {
+
+    // Kiểm tra xem tất cả giá trị của khóa chính đã có chưa
+    if (keyValues.some(value => value === undefined || value === null)) {
         console.error("Thiếu thông tin khóa chính!", keys);
         alert("Thiếu thông tin khóa chính!");
         return;
     }
 
+    // Tạo đường dẫn DELETE từ khóa chính
     const idPath = keyValues.join("/");
     const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
 
     console.log("Gửi DELETE request tới:", url);
 
-    fetch(url, { method: 'DELETE' })
-        .then(async response => {
-            const text = await response.text();
-            if (!text.trim().startsWith("{") && !text.trim().startsWith("[")) {
-                console.log("Phản hồi từ server:", text);
-                return { message: text };
-            }
-            return JSON.parse(text);
-        })
-        .then(resData => {
-            alert(resData.message || "Xóa dữ liệu thành công.");
-            //table();
-        })
-        .catch(error => {
-            console.error("Có lỗi xảy ra khi xóa:", error.message);
-            alert(`Lỗi: ${error.message}`);
-        });
+    try {
+        const response = await fetch(url, { method: 'DELETE' });
+
+        if (!response.ok) {
+            console.error(`Lỗi HTTP ${response.status}: ${response.statusText}`);
+            alert(`Lỗi xóa: ${response.statusText}`);
+            return;
+        }
+
+        const text = await response.text();
+        const resData = text.trim().startsWith("{") || text.trim().startsWith("[") ? JSON.parse(text) : { message: text };
+
+        alert(resData.message || "Xóa dữ liệu thành công.");
+    } catch (error) {
+        console.error("Có lỗi xảy ra khi xóa:", error.message);
+        alert(`Lỗi: ${error.message}`);
+    }
 }
 
 

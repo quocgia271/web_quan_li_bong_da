@@ -57,10 +57,10 @@
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ GIẢI ĐẤU</label>
                 </div>
                 <div class="card-header">
-                    <form class="row mb-3" id="giaiDauForm">
-                        <div class="col-md-4">
+                    <form class="row mb-3" id="inputForm">
+                        <div class="col-md-2">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
-                            <input type="text" class="form-control" id="maGiaiDau" required />
+                            <input type="text" class="form-control" id="maGiaiDau" required readonly/>
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Tên Giải Đấu</label>
@@ -70,27 +70,28 @@
                             <label class="font-weight-bold">Tên Tổ Chức</label>
                             <input type="text" class="form-control" id="tenToChuc" required />
                         </div>
-                        <div class="col-md-6 mt-3">
-                            <label class="font-weight-bold">Ngày Bắt Đầu</label>
-                            <input type="date" class="form-control" id="ngayBatDau" required />
-                        </div>
-                        <div class="col-md-6 mt-3">
-                            <label class="font-weight-bold">Ngày Kết Thúc</label>
-                            <input type="date" class="form-control" id="ngayKetThuc" required />
-                        </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-2">
                             <label class="font-weight-bold">Giới Tính</label>
                             <select class="form-control" id="maGioiTinh">
                                 <option value="nam">Nam</option>
                                 <option value="nữ">Nữ</option>
                             </select>
                         </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ngày Bắt Đầu</label>
+                            <input type="date" class="form-control" id="ngayBatDau" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ngày Kết Thúc</label>
+                            <input type="date" class="form-control" id="ngayKetThuc" required />
+                        </div>
+                       
                         <div class="col-md-12 mt-3">
                             <label class="font-weight-bold">Mô Tả</label>
                             <textarea class="form-control" id="moTa"></textarea>
                         </div>
                         <div class='col-md-12 mt-3'>
-                            <button id="button_luu" class="btn btn-success">Lưu</button>
+                            <button id="button_luu" class="btn btn-success" >Lưu</button>
                             <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại Trang</button>
                         </div>
                     </form>
@@ -147,6 +148,7 @@
             }
         }
     </script>
+    
     <script src="/backend/services/doi_tuong/quanly_admin/giai_dau/giaiDau.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>

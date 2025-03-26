@@ -55,15 +55,22 @@
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ NHÀ HÀNG</label>
                 </div>
                 <div class="card-header">
-                    <form:form class="row mb-3" modelAttribute="entity" action="" method="post">
+                    <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Người Dùng</label>
-                            <input path="maNguoiDung" type="text" class="form-control" id="maNguoiDung" required />
+                            <input path="maNguoiDung" type="text" class="form-control" id="maNguoiDung" required readonly />
                         </div>
+
+                        <!-- <div class="col-md-3">
+                            <label class="font-weight-bold">Tài Khoản</label>
+                            <input path="taiKhoan" type="text" class="form-control" id="taiKhoan" required />
+                        </div> -->
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Tài Khoản</label>
-                            <input path="taiKhoan" type="text" class="form-control" id="taiKhoan" required />
+                            <select class="form-control" id="taiKhoan">
+                                <option value="">-- Chọn Tài Khoản --</option>
+                            </select>
                         </div>
 
                         <div class="col-md-3">
