@@ -1,4 +1,26 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+
+
+
+    // getImage(public_id) {
+    //     return getImage(public_id)
+    // },
+    // updateImage(public_id, newImagePath) {
+    //     return updateImage(public_id, newImagePath);
+    // },
+    // uploadImage(imagePath) {
+    //     return uploadImage(imagePath);
+    // },
+    // deleteImage(public_id) {
+    //     return deleteImage(public_id);
+    // },
+
+
+
+    // hamChung.getImage("84702b00-a35f-400c-b657-a377a9d70223");
+    // // console.log(hamChung.uploadImage("C:/Users/vanti/Downloads/0cca92b8-76e0-4ce0-b1db-db0b38ff12a1.jpg"));
+    // var data = hamChung.uploadImage("C:/Users/vanti/Downloads/0cca92b8-76e0-4ce0-b1db-db0b38ff12a1.jpg");
+    // console.log(await data);
     viewTbody();
 });
 

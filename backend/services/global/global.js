@@ -1,5 +1,7 @@
 const congAPI = 4002;
 const linkCongAPI = "http://localhost:" + congAPI + "/api/";
+const urlFoderImage = 'C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/';
+
 let listTables_duocChon = []; // Mảng lưu các bàn đã chọn
 let nhaHangDangChon ;
 
@@ -21,6 +23,9 @@ const GlobalStore = {
 
     getLinkCongAPI() {
         return linkCongAPI;
+    },
+    getLinkFoderImage(){
+        return urlFoderImage;
     }
 
 };

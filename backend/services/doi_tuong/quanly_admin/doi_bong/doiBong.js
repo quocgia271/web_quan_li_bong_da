@@ -5,12 +5,14 @@ const maDoiBong = document.getElementById("maDoiBong");
 const tenDoiBong = document.getElementById("tenDoiBong");
 const quocGia = document.getElementById("quocGia");
 const maGioiTinh = document.getElementById("maGioiTinh");
-const logo = document.getElementById("logo");
+const hinhAnh = document.getElementById("logo");
+const url_hinhAnhMoi = document.getElementById("logoFile");
+
 const maQlDoiBong = document.getElementById("maQlDoiBong");
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function (event) {
     loadDanhSachNguoiDung_quanLyDoiBong();
-    viewTbody();
+    await viewTbody();
     // console.log(loadDanhSachNguoiDung_quanLyDoiBong());
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
@@ -22,21 +24,43 @@ async function viewTbody() {
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
-
-    data.forEach(item => {
+    // Dùng Promise.all để chờ tất cả hình ảnh tải xong
+    const rows = await Promise.all(data.map(async item => {
+        // const hinh_anh = await hamChung.getImage(item.hinh_anh);
+        // console.log(item.hinh_anh);
+        let hinh_anh;
         const row = document.createElement("tr");
+        // C:\Users\vanti\Desktop\quan_ly_tran_dau\frontend\public\images\cat-2.png
+
+        if (item.logo === null) {
+            hinh_anh = "/frontend/public/images/cat-2.png";
+        } else {
+            hinh_anh = await hamChung.getImage(item.logo);
+            console.log(hinh_anh);
+            if (hinh_anh === null) {
+                hinh_anh = "/frontend/public/images/cat-2.png";
+            }
+            else {
+                hinh_anh = (await hamChung.getImage(item.logo)).url;
+            }
+            //console.log(await hamChung.getImage(item.hinh_anh));
+            console.log(hinh_anh);
+        }
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_doi_bong}</td>
             <td style="text-align: center;">${item.ten_doi_bong}</td>
             <td style="text-align: center;">${item.quoc_gia}</td>
             <td style="text-align: center;">${item.gioi_tinh}</td>
-            <td style="text-align: center;"><img src="${item.logo}" alt="Logo" width="50"></td>
+            <td style="text-align: center;"><img src="${hinh_anh}" alt="Logo" width="50"></td>
             <td style="text-align: center;">${item.ma_ql_doi_bong}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
-        tableBody.appendChild(row);
-    });
+        return row;
+    }));
+
+    // Thêm tất cả hàng vào bảng cùng lúc
+    rows.forEach(row => tableBody.appendChild(row));
 
     button_sua(data);
     button_xoa(data);
@@ -46,6 +70,9 @@ async function viewTbody() {
 async function handleLuuThayDoi(event) {
     event.preventDefault();
 
+    const inputFile = document.getElementById('logoFile'); // Thẻ input file
+    const urlFoderImage = GlobalStore.getLinkFoderImage();
+
     const form = document.getElementById("inputForm");
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -53,13 +80,26 @@ async function handleLuuThayDoi(event) {
     }
 
     let formData = {};
+    let id_Hinh_anh_thay = "";
+    //  không chọn hình ảnh mới
+    if (url_hinhAnhMoi.value === "")
+        id_Hinh_anh_thay = hinhAnh.value;
+    // chọn hình ảnh mới thì đưa ảnh mới lên và lấy id
+    else {
+        const fileNameImage = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
+        const hinhAnhMoi = await hamChung.uploadImage(urlFoderImage + fileNameImage);
+        // console.log(fileNameImage);
+        // console.log(hinhAnhMoi);
+        // console.log(hinhAnhMoi.public_id);
+        id_Hinh_anh_thay = hinhAnhMoi.public_id;
+    }
     if (maDoiBong.value === "") {
         formData = {
             ma_doi_bong: await hamChung.taoID_theoBang("doi_bong"),
             ten_doi_bong: tenDoiBong.value,
             quoc_gia: quocGia.value,
             gioi_tinh: maGioiTinh.value,
-            logo: logo.value,
+            logo: id_Hinh_anh_thay,
             ma_ql_doi_bong: maQlDoiBong.value
         };
         await hamChung.them(formData, "doi_bong");
@@ -70,7 +110,7 @@ async function handleLuuThayDoi(event) {
             ten_doi_bong: tenDoiBong.value,
             quoc_gia: quocGia.value,
             gioi_tinh: maGioiTinh.value,
-            logo: logo.value,
+            logo: id_Hinh_anh_thay,
             ma_ql_doi_bong: maQlDoiBong.value
         };
         await hamChung.sua(formData, "doi_bong");

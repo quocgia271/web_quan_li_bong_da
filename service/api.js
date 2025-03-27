@@ -1,9 +1,30 @@
+// còn cấu hình cho máy tính cùng mạng có thể cùng truy cập
+// levantien123@
+//J#P2?@eXnB$X*AJ
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
+// cấu hình upload ảnh
+const cloudinary = require('cloudinary').v2;
+const dotenv = require('dotenv');
+const fs = require('fs');
+const path = require('path'); // Import path module
 
+
+//////// 
 const app = express();
 const port = 4002;
+
+dotenv.config();
+// Cấu hình Cloudinary
+cloudinary.config({
+    cloud_name: 'dyilzwziv',
+    api_key: '215441275658421',
+    api_secret: 'pMiC5-j_zWwvmOlkgohQ62cyQsY'
+});
+const cloudName = cloudinary.config().cloud_name;
+const BASE_URL = `https://res.cloudinary.com/${cloudName}/image/upload`;
+
 
 // Sử dụng CORS cho tất cả các nguồn
 app.use(cors());
@@ -46,6 +67,133 @@ const tables = {
     "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
 };
 
+
+app.get('/api/imageCloudinary/:public_id', async (req, res) => {
+
+    const { public_id } = req.params;
+
+    try {
+        const result = await cloudinary.api.resource(public_id);
+        const version = `v${result.version}`;
+        const imageUrl = `${BASE_URL}/${version}/${public_id}.jpg`;
+        console.log(imageUrl);
+        res.json({
+            message: "Image URL retrieved successfully",
+            url: imageUrl
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to retrieve image",
+            error: error.message
+        });
+    }
+});
+
+
+
+// API tải ảnh lên Cloudinary với tên file gốc
+app.post('/api/imageCloudinary', async (req, res) => {
+    try {
+        const { imagePath } = req.body;
+
+        if (!imagePath) {
+            return res.status(400).json({ error: 'Image path is required' });
+        }
+
+        if (!fs.existsSync(imagePath)) {
+            return res.status(400).json({ error: 'File does not exist' });
+        }
+
+        // Lấy tên file từ đường dẫn
+        const fileName = path.basename(imagePath, path.extname(imagePath));
+
+        // Upload lên Cloudinary với public_id là tên file gốc
+        const uploadResult = await cloudinary.uploader.upload(imagePath, {
+            public_id: fileName
+        });
+
+        res.json({
+            message: 'Upload successful',
+            data: {
+                public_id: uploadResult.public_id,
+                url: uploadResult.secure_url
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+app.delete('/api/imageCloudinary/:public_id', async (req, res) => {
+    const { public_id } = req.params;
+
+    try {
+        // Xóa ảnh khỏi Cloudinary
+        const result = await cloudinary.uploader.destroy(public_id);
+
+        if (result.result === 'ok') {
+            res.json({
+                message: "Image deleted successfully",
+                public_id: public_id
+            });
+        } else {
+            res.status(500).json({
+                message: "Failed to delete image",
+                error: result
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Error deleting image",
+            error: error.message
+        });
+    }
+});
+app.put('/api/imageCloudinary/:public_id', async (req, res) => {
+    const { public_id } = req.params;
+    const { newImagePath } = req.body;
+
+    try {
+        if (!newImagePath) {
+            return res.status(400).json({ error: 'New image path is required' });
+        }
+
+        if (!fs.existsSync(newImagePath)) {
+            return res.status(400).json({ error: 'File does not exist' });
+        }
+
+        // Xóa ảnh cũ khỏi Cloudinary
+        const deleteResult = await cloudinary.uploader.destroy(public_id);
+
+        if (deleteResult.result !== 'ok') {
+            return res.status(500).json({
+                message: "Failed to delete old image",
+                error: deleteResult
+            });
+        }
+
+        // Lấy tên file từ đường dẫn mới
+        const fileName = path.basename(newImagePath, path.extname(newImagePath));
+
+        // Upload ảnh mới lên Cloudinary
+        const uploadResult = await cloudinary.uploader.upload(newImagePath, {
+            public_id: fileName
+        });
+
+        res.json({
+            message: 'Image updated successfully',
+            data: {
+                public_id: uploadResult.public_id,
+                url: uploadResult.secure_url
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 Object.entries(tables).forEach(([table, keys]) => {
     // GET - Lấy tất cả dữ liệu
     const moment = require("moment");
@@ -74,11 +222,11 @@ Object.entries(tables).forEach(([table, keys]) => {
             update: `/api/${table}/:${tables[table].map((_, i) => `id${i + 1}`).join("/:")}`,
             delete: `/api/${table}/:${tables[table].map((_, i) => `id${i + 1}`).join("/:")}`,
         }));
-    
+
         res.json(apiList);
     });
-    
-    
+
+    /// nếu ko xử lý ngaỳ thì nó trả về dạng :  :::::   "ngay_tao": "2025-03-22T13:53:18.000Z"
     app.get(`/api/${table}`, (req, res) => {
         db.query(`SELECT * FROM ??`, [table], (err, results) => {
             if (err) return res.status(500).send(`Lỗi khi lấy dữ liệu từ ${table}`);
@@ -136,15 +284,6 @@ Object.entries(tables).forEach(([table, keys]) => {
         });
     });
 
-
-
-    // put - Cập nhật bản ghi
-    // cần chỉnh sửa phần này 
-    // với key là những kiểu dữ liệu ngày thì sao 
-
-
-
-
     app.delete(`/api/${table}/:${keys.map((_, i) => `id${i + 1}`).join("/:")}`, (req, res) => {
 
         const conditions = keys.map((key) => `\`${key}\` = ?`).join(" AND ");
@@ -163,18 +302,18 @@ Object.entries(tables).forEach(([table, keys]) => {
         if (Object.keys(req.body).length === 0) {
             return res.status(400).send("Không có dữ liệu để cập nhật.");
         }
-    
+
         // Chuyển đổi dữ liệu ngày tháng sang định dạng MySQL (YYYY-MM-DD)
         Object.keys(req.body).forEach(key => {
             req.body[key] = convertToMySQLDate(req.body[key]);
         });
-    
+
         const updates = Object.keys(req.body).map(key => `\`${key}\` = ?`).join(", ");
         const values = [...Object.values(req.body), ...keys.map((_, i) => req.params[`id${i + 1}`])];
-    
+
         const conditions = keys.map(key => `\`${key}\` = ?`).join(" AND ");
         const sql = `UPDATE \`${table}\` SET ${updates} WHERE ${conditions}`;
-    
+
         db.query(sql, values, (err, result) => {
             if (err) {
                 return res.status(500).send(`Lỗi khi cập nhật ${table}: ${err.message}`);
@@ -185,7 +324,7 @@ Object.entries(tables).forEach(([table, keys]) => {
             res.send(`Cập nhật ${table} thành công!`);
         });
     });
-    
+
 
 
     app.post(`/api/${table}`, (req, res) => {
@@ -193,20 +332,20 @@ Object.entries(tables).forEach(([table, keys]) => {
         Object.keys(req.body).forEach(key => {
             req.body[key] = convertToMySQLDate(req.body[key]); // Chuyển đổi nếu là ngày hợp lệ
         });
-    
+
         const columns = Object.keys(req.body);
         const values = Object.values(req.body);
-    
+
         if (columns.length === 0) return res.status(400).send("Không có dữ liệu để thêm.");
-    
+
         const sql = `INSERT INTO \`${table}\` (${columns.map(col => `\`${col}\``).join(", ")}) VALUES (${columns.map(() => "?").join(", ")})`;
-    
+
         db.query(sql, values, (err) => {
             if (err) return res.status(500).send(`Lỗi khi thêm vào ${table}: ${err.message}`);
             res.status(201).send(`Thêm vào ${table} thành công`);
         });
     });
-    
+
     // Hàm chuyển đổi "YYYY-MM-DD" → "YYYY-MM-DDT00:00:00.000Z"
 
 

@@ -75,9 +75,12 @@
                                 <option value="nữ">Nữ</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Logo</label>
-                            <input path="logo" type="text" class="form-control" id="logo" />
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">logo</label>
+                            <!-- Input hiển thị tên file hoặc URL ảnh -->
+                            <input type="text" class="form-control" id="logo" readonly />
+                            <!-- Input cho phép người dùng chọn file ảnh -->
+                            <input type="file" class="form-control" id="logoFile" />
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Quản Lý Đội Bóng</label>

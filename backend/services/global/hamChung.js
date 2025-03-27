@@ -51,6 +51,20 @@ const hamChung = {
     xoa(data, table_name) {
         return xoa(data, table_name)
     },
+    getImage(public_id) {
+        return getImage(public_id)
+    },
+    
+    async uploadImage(file) {
+        return uploadImage(file);
+    },
+    // uploadImage(imagePath) {
+    //     return uploadImage(imagePath);
+    // },
+    // deleteImage(public_id) {
+    //     return deleteImage(public_id);
+    // },
+    
 
 
 };
@@ -480,6 +494,179 @@ async function xoa(keys, table_name) {
     }
 }
 
+/** 🔵 Hàm lấy ảnh từ Cloudinary theo `public_id` */
+async function getImage(public_id) {
+    const link = `imageCloudinary/${public_id}`;
+    const url = `${GlobalStore.getLinkCongAPI()}${link}`;
+
+    console.log("Gửi GET request tới:", url);
+
+    try {
+        const response = await fetch(url, { method: "GET" });
+
+        const result = await response.json();
+        // if (!response.ok) throw new Error(result.error || "Get image failed");
+
+       // console.log("✅ Lấy ảnh thành công:", result);
+        return result;
+    } catch (error) {
+        // console.error("❌ Lỗi lấy ảnh:", error.message);
+        return null;
+    }
+}
+// /** 🟢 Hàm upload ảnh lên Cloudinary */
+// async function uploadImage(imagePath) {
+//     try {
+//         const response = await fetch('http://localhost:4002/api/uploadImage', { // Fix URL
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ imagePath })
+//         });
+
+//         // Kiểm tra lỗi trước khi đọc JSON
+//         if (!response.ok) {
+//             const errorData = await response.json();
+//             throw new Error(errorData.error || 'Upload failed');
+//         }
+
+//         const data = await response.json();
+//        //console.log('✅ Uploaded Image:', data.data.public_id);
+//         return data.data.public_id;
+//     } catch (error) {
+//         console.error('❌ Error uploading image:', error.message);
+//         return null;
+//     }
+// }
+/** 🟢 Hàm upload ảnh lên Cloudinary */
+// async function uploadImage(file) {
+//     try {
+//         const formData = new FormData();
+//         formData.append('image', file); // Đính kèm tệp vào FormData
+
+//         const response = await fetch('http://localhost:4002/api/uploadImage', { // Fix URL
+//             method: 'POST',
+//             body: formData // Gửi FormData (không cần headers Content-Type, trình duyệt sẽ tự động xử lý)
+//         });
+
+//         // Kiểm tra lỗi trước khi đọc JSON
+//         if (!response.ok) {
+//             const errorData = await response.json();
+//             throw new Error(errorData.error || 'Upload failed');
+//         }
+
+//         const data = await response.json();
+//         //console.log('✅ Uploaded Image:', data.data.public_id);
+//         return data.data.public_id;
+//     } catch (error) {
+//         console.error('❌ Error uploading image:', error.message);
+//         return null;
+//     }
+// }
+// async function uploadImage(file) {
+//     // try {
+//         // Tạo FormData và thêm tệp ảnh vào
+//         const formData = new FormData();
+//         formData.append('imagePath', file); // Đảm bảo rằng tên trường ('imagePath') trùng với tên ở backend
+        
+//         // Gửi yêu cầu POST đến API để tải ảnh lên
+//         const response = await fetch('http://localhost:4002/api/uploadImage', {
+//             method: 'POST',
+//             body: formData // Trình duyệt sẽ tự động thiết lập Content-Type cho bạn
+//         });
+
+//         // Kiểm tra trạng thái phản hồi
+//         if (!response.ok) {
+//             const errorData = await response.json(); // Đọc chi tiết lỗi từ phản hồi JSON
+//             throw new Error(errorData.error || 'Upload failed');
+//         }
+
+//         // Đọc dữ liệu JSON trả về từ API
+//         const data = await response.json();
+//         console.log('✅ Ảnh đã được tải lên thành công:', data.data.public_id);
+
+//         // Trả về public_id của ảnh đã tải lên
+//         return data.data.public_id;
+//     // } catch (error) {
+//     //     // Xử lý lỗi và ghi lại thông báo
+//     //     console.error('❌ Lỗi khi tải ảnh lên:', error.message);
+//     //     return null;
+//     // }
+// }
+async function uploadImage(filePath) {
+    try {
+        const response = await fetch('http://localhost:4002/api/imageCloudinary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ imagePath: filePath })
+        });
+
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+    return null;
+}
+
+
+
+// /** 🟡 Hàm cập nhật ảnh */
+// async function updateImage(public_id, newImagePath) {
+//     const link = "updateImage";
+//     const url = `${GlobalStore.getLinkCongAPI()}${link}`;
+//     const data = { public_id, newImagePath };
+
+//     console.log("Gửi PUT request tới:", url);
+//     console.log("Dữ liệu gửi đi:", data);
+
+//     try {
+//         const response = await fetch(url, {
+//             method: "PUT",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(data),
+//         });
+
+//         const result = await response.json();
+//         if (!response.ok) throw new Error(result.error || "Update failed");
+
+//         console.log("✅ Cập nhật ảnh thành công:", result);
+//         return result;
+//     } catch (error) {
+//         console.error("❌ Lỗi cập nhật ảnh:", error.message);
+//         return null;
+//     }
+// }
+
+// /** 🔴 Hàm xóa ảnh */
+// async function deleteImage(public_id) {
+//     const link = "deleteImage";
+//     const url = `${GlobalStore.getLinkCongAPI()}${link}`;
+//     const data = { public_id };
+
+//     console.log("Gửi DELETE request tới:", url);
+//     console.log("Dữ liệu gửi đi:", data);
+
+//     try {
+//         const response = await fetch(url, {
+//             method: "DELETE",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(data),
+//         });
+
+//         const result = await response.json();
+//         if (!response.ok) throw new Error(result.error || "Delete failed");
+
+//         console.log("✅ Xóa ảnh thành công:", result);
+//         return result;
+//     } catch (error) {
+//         console.error("❌ Lỗi xóa ảnh:", error.message);
+//         return null;
+//     }
+// }
 
 
 // Gắn vào window để có thể truy cập ở mọi nơi

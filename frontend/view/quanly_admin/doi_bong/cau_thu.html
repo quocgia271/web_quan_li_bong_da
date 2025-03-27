@@ -98,11 +98,17 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Hình Ảnh</label>
                             <input type="file" class="form-control" id="hinhAnh" />
+                        </div> -->
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Hình Ảnh</label>
+                            <!-- Input hiển thị tên file hoặc URL ảnh -->
+                            <input type="text" class="form-control" id="hinhAnh" readonly />
+                            <!-- Input cho phép người dùng chọn file ảnh -->
+                            <input type="file" class="form-control" id="hinhAnhFile" />
                         </div>
-
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
                                 <button id="button_luu" class="btn btn-success">Lưu</button>
