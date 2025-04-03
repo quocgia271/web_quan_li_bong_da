@@ -67,8 +67,14 @@
                         </div> -->
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
-                            <select class="form-control" id="maGiaiDau" required >
+                            <select class="form-control" id="maGiaiDau" required>
                                 <option value="">-- Chọn Giải Đấu --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Mã Vòng Đấu</label>
+                            <select class="form-control" id="maVongDau" required>
+                                <option value="">-- Chọn Vòng Đấu --</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -116,7 +122,7 @@
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Trạng Thái</label>
-                            <select path="trangThai" class="form-control" id="trangThai" >
+                            <select path="trangThai" class="form-control" id="trangThai">
                                 <option value="Chưa diễn ra">Chưa diễn ra</option>
                                 <option value="Đang diễn ra">Đang diễn ra</option>
                                 <option value="Hoàn tất">Hoàn tất</option>
@@ -127,12 +133,7 @@
                             <label class="font-weight-bold">Mã Vòng Đấu</label>
                             <input path="maVongDau" type="text" class="form-control" id="maVongDau" />
                         </div> -->
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Vòng Đấu</label>
-                            <select class="form-control" id="maVongDau" required>
-                                <option value="">-- Chọn Vòng Đấu --</option>
-                            </select>
-                        </div>
+
 
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
@@ -143,7 +144,7 @@
                                 <p class="text-danger">${message0}</p>
                             </div>
                         </div>
-                    </form:form>
+                        </form:form>
                 </div>
 
                 <div class="card mb-4">
@@ -164,7 +165,9 @@
                                     <th style="text-align: center;">Mã Trọng Tài</th>
                                     <th style="text-align: center;">Trạng Thái</th>
                                     <th style="text-align: center;">Mã Vòng Đấu</th>
-                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Kết quả</th>
+                                    <th style="text-align: center;">Sửa thông tin</th>
+                                    <th style="text-align: center;">Sửa kêt quả</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
@@ -178,9 +181,11 @@
                                     <th style="text-align: center;">Giờ Diễn Ra</th>
                                     <th style="text-align: center;">Sân Vận Động</th>
                                     <th style="text-align: center;">Mã Trọng Tài</th>
+                                    <th style="text-align: center;">Kết quả</th>
                                     <th style="text-align: center;">Trạng Thái</th>
                                     <th style="text-align: center;">Mã Vòng Đấu</th>
-                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Sửa thông tin</th>
+                                    <th style="text-align: center;">Sửa kêt quả</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </tfoot>

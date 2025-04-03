@@ -12,6 +12,7 @@ const maTrongTai = document.getElementById("maTrongTai");
 const trangThai = document.getElementById("trangThai");
 const maVongDau = document.getElementById("maVongDau");
 
+
 document.addEventListener("DOMContentLoaded", function () {
     loadDanhSachGiaiDau();
     loadDanhSachDoiBong_maDoi1();
@@ -25,13 +26,25 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Hiển thị danh sách trận đấu
+async function layKetQua(ma_tran_dau) {
+    const data = await hamChung.layThongTinTheo_ID("ket_qua_tran_dau", ma_tran_dau);
+    let stringKetQua = "--";
+    if (data != null) {
+        stringKetQua ="tiến";
+        stringKetQua = data.ma_doi_thang + " " + data.so_ban_doi_1 + "/" + data.so_ban_doi_2;
+    }
+
+    return stringKetQua;
+
+}
 async function viewTbody() {
     const data = await hamChung.layDanhSach("tran_dau");
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
 
-    data.forEach(item => {
+    data.forEach(async item => {
+        const ketQua = await layKetQua(item.ma_tran_dau);
         const row = document.createElement("tr");
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_tran_dau}</td>
@@ -44,13 +57,16 @@ async function viewTbody() {
             <td style="text-align: center;">${item.ma_trong_tai}</td>
             <td style="text-align: center;">${item.trang_thai}</td>
             <td style="text-align: center;">${item.ma_vong_dau}</td>
-            <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
+            <td style="text-align: center;">${ketQua}</td>
+            <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa thông tin</button></td>
+            <td style="text-align: center;"><button class="edit-kq-btn btn btn-warning btn-sm">Sửa kết quả </button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
         tableBody.appendChild(row);
     });
 
     button_sua(data);
+    button_sua_ket_qua();
     button_xoa(data);
 }
 
@@ -125,6 +141,24 @@ function button_sua(data) {
     });
 }
 
+function button_sua_ket_qua() {
+    document.querySelectorAll(".edit-kq-btn").forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            // const item = data[index];
+            // maTranDau.value = item.ma_tran_dau;
+            // maGiaiDau.value = item.ma_giai_dau;
+            // maDoi1.value = item.ma_doi_1;
+            // maDoi2.value = item.ma_doi_2;
+            // ngayDienRa.value = item.ngay_dien_ra;
+            // gioDienRa.value = item.gio_dien_ra;
+            // sanVanDong.value = item.san_van_dong;
+            // maTrongTai.value = item.ma_trong_tai;
+            // trangThai.value = item.trang_thai;
+            // maVongDau.value = item.ma_vong_dau;
+            console.log("Sửa kết quả trận đấu");
+        });
+    });
+}
 // Xử lý nút "Xóa"
 function button_xoa(data) {
     document.querySelectorAll(".delete-btn").forEach((btn, index) => {

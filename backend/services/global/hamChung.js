@@ -39,6 +39,7 @@ const hamChung = {
 };
 
 async function layDanhSach(table) {
+    console.log(GlobalStore.getLinkCongAPI()+table);
     try {
         const response = await fetch(GlobalStore.getLinkCongAPI() + table);
         return await response.json();

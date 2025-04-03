@@ -1,5 +1,12 @@
 const congAPI = 4002;
-const linkCongAPI = "http://localhost:" + congAPI + "/api/";
+const IPv4_Address =  "192.168.1.136";
+// const linkCongAPI = "http://localhost:" + congAPI + "/api/";
+// ex : http://192.168.1.136:4002/api
+// ex : http://localhost:4002/api
+
+// const linkCongAPI = IPv4_Address +":"+ congAPI + "/api/";
+const linkCongAPI = "http://"+IPv4_Address +":"+ congAPI + "/api/";
+
 const urlFoderImage = 'C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/';
 
 let listTables_duocChon = []; // Mảng lưu các bàn đã chọn

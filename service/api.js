@@ -398,7 +398,10 @@ app.put('/api/imageCloudinary/:public_id', async (req, res) => {
 
 
 
-// Khởi động server
-app.listen(port, () => {
-    console.log(`Server đang chạy tại http://localhost:${port}`);
+// // Khởi động server
+// app.listen(port, () => {
+//     console.log(`Server đang chạy tại http://localhost:${port}`);
+// });
+app.listen(port, "0.0.0.0", () => {
+    console.log(`Server is running on http://0.0.0.0:${port}`);
 });
