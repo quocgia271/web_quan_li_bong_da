@@ -39,7 +39,7 @@ const hamChung = {
 };
 
 async function layDanhSach(table) {
-    console.log(GlobalStore.getLinkCongAPI()+table);
+    console.log(GlobalStore.getLinkCongAPI() + table);
     try {
         const response = await fetch(GlobalStore.getLinkCongAPI() + table);
         return await response.json();
@@ -60,32 +60,54 @@ async function layThongTinTheo_ID(table, id) {
     }
 }
 
+
 async function taoID_theoBang(table) {
+    const primaryKeys = {
+        "tai_khoan": ["tai_khoan"],           // Khóa chính là tài khoản
+        "vai_tro": ["ma_vai_tro"],             // Khóa chính là mã vai trò
+        "nguoi_dung": ["ma_nguoi_dung"],       // Khóa chính là mã người dùng
+        "giai_dau": ["ma_giai_dau"],           // Khóa chính là mã giải đấu
+        "doi_bong": ["ma_doi_bong"],           // Khóa chính là mã đội bóng
+        "vi_tri_cau_thu": ["ma_vi_tri"],       // Khóa chính là mã vị trí cầu thủ
+        "cau_thu": ["ma_cau_thu"],             // Khóa chính là mã cầu thủ
+        "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
+        "vong_dau": ["ma_vong_dau"],           // Khóa chính là mã vòng đấu
+        "tran_dau": ["ma_tran_dau"],           // Khóa chính là mã trận đấu
+        "ket_qua_tran_dau": ["ma_tran_dau"],   // Khóa chính là mã trận đấu
+        "trong_tai": ["ma_trong_tai"],         // Khóa chính là mã trọng tài
+        "bang_dau": ["ma_bang_dau"],           // Khóa chính là mã bảng đấu
+        "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"] // Khóa chính là (ma_doi_bong, ma_bang_dau)
+    };
     try {
         const response = await fetch(GlobalStore.getLinkCongAPI() + table);
         const danhSach = await response.json();
 
+        // Lấy khóa chính cho bảng từ đối tượng ánh xạ
+        const keyColumns = primaryKeys[table] || ['id']; // Nếu không có trong ánh xạ thì dùng 'id' làm mặc định
+
         // Chuyển "don_dat_ban" -> "ddb_"
         const prefix = table.split("_").map(word => word.charAt(0)).join("") + "_";
 
+        console.log(prefix);
         if (!Array.isArray(danhSach) || danhSach.length === 0) {
+            console.log(prefix);
             return `${prefix}0001`; // Nếu bảng rỗng, tạo ID đầu tiên
         }
+        console.log(prefix);
 
-        // Tìm ID lớn nhất trong danh sách
+        // Tìm ID lớn nhất trong danh sách theo các khóa chính đã xác định
         const lastID = danhSach
-            .map(item => item?.id) // Dùng optional chaining để tránh lỗi
-            .filter(id => typeof id === "string" && id.startsWith(prefix)) // Kiểm tra kiểu dữ liệu
+            .map(item => keyColumns.map(key => item?.[key]).join("_")) // Kết hợp các khóa chính lại với nhau
+            .filter(id => typeof id === "string" && id.startsWith(prefix)) // Kiểm tra kiểu dữ liệu và prefix
             .sort()
             .pop();
-
 
         if (!lastID) {
             return `${prefix}0001`; // Nếu không tìm thấy ID hợp lệ
         }
 
         // Lấy số cuối cùng, tăng lên 1
-        const numberPart = parseInt(lastID.split("_")[1]) || 0;
+        const numberPart = parseInt(lastID.split("_").pop()) || 0;
         const newID = `${prefix}${(numberPart + 1).toString().padStart(4, "0")}`;
 
         return newID;
@@ -94,6 +116,7 @@ async function taoID_theoBang(table) {
         return `${table.split("_").map(w => w.charAt(0)).join("")}_0001`; // ID mặc định nếu lỗi
     }
 }
+
 
 
 function them(data, table_name) {
@@ -306,28 +329,51 @@ async function getImage(public_id) {
         return null;
     }
 }
-async function uploadImage(filePath) {
+// async function uploadImage(filePath) {
+//     try {
+//         //'http://localhost:4002/api/imageCloudinary'
+//         const link = "imageCloudinary";
+//         const url = `${GlobalStore.getLinkCongAPI()}${link}`;
+//         // const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
+//         const response = await fetch(url, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ imagePath: filePath })
+//         });
+
+//         const data = await response.json();
+//         return data.data;
+//     } catch (error) {
+//         console.error('Error:', error.message);
+//     }
+//     return null;
+// }
+
+// Hàm tải ảnh lên
+async function uploadImage(form) {
     try {
-        //'http://localhost:4002/api/imageCloudinary'
-        const link = "imageCloudinary";
-        const url = `${GlobalStore.getLinkCongAPI()}${link}`;
-        // const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
-        const response = await fetch(url, {
+        // Gửi yêu cầu tải ảnh lên server
+        const response = await fetch('http://localhost:4002/api/upload', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ imagePath: filePath })
+            body: form,
         });
 
         const data = await response.json();
-        return data.data;
+        console.log(data);
+        if (response.ok) {
+            // Nếu tải lên thành công, cập nhật URL ảnh
+            document.getElementById('hinhAnh').value = data.imageUrl; // Cập nhật trường #hinhAnh
+        } else {
+            alert("Lỗi tải ảnh lên: " + data.error);
+        }
     } catch (error) {
-        console.error('Error:', error.message);
+        console.error("Lỗi: ", error);
+        alert("Có lỗi xảy ra khi tải ảnh lên.");
     }
     return null;
 }
-
 
 
 // /** 🟡 Hàm cập nhật ảnh */
