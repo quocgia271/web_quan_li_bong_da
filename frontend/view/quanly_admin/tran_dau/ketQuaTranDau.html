@@ -56,12 +56,7 @@
                         ĐẤU</label>
                 </div>
                 <div class="card-header">
-                    <div class="col-md-3">
-                        <label class="font-weight-bold">Chọn Giải Đâu</label>
-                        <select class="form-control" id="maGiaiDau" required>
-                            <option value="">-- Chọn Giải Đấu --</option>
-                        </select>
-                    </div>
+                   
                     <!-- <div class="col-md-3">
                         <label class="font-weight-bold">Mã Vòng Đấu</label>
                         <select class="form-control" id="maVongDau" required>
@@ -70,7 +65,7 @@
                     </div> -->
                 </div>
                 <div class="card-header">
-                    <form:form class="row mb-3" modelAttribute="matchResultEntity" action="" method="post">
+                    <form class="row mb-3" id="inputForm">
                         <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Kết Quả</label>
                             <input path="maKetQua" type="text" class="form-control" id="maKetQua" readonly required />
@@ -79,6 +74,12 @@
                             <label class="font-weight-bold">Mã Trận Đấu</label>
                             <input path="maTranDau" type="text" class="form-control" id="maTranDau" required />
                         </div> -->
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Chọn Giải Đâu</label>
+                            <select class="form-control" id="maGiaiDau" required >
+                                <option value="">-- Chọn Giải Đấu --</option>
+                            </select>
+                        </div>
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trận Đấu</label>
                             <select class="form-control" id="maTranDau" required>
@@ -99,12 +100,12 @@
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Số Bàn Đội 1</label>
-                            <input path="soBanDoi1" type="number" class="form-control" id="soBanDoi1" required />
+                            <input path="soBanDoi1" type="number" class="form-control" min="0" id="soBanDoi1" required />
                         </div>
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Số Bàn Đội 2</label>
-                            <input path="soBanDoi2" type="number" class="form-control" id="soBanDoi2" required />
+                            <input path="soBanDoi2" type="number" class="form-control" min="0" id="soBanDoi2" required />
                         </div>
 
 
@@ -123,12 +124,14 @@
                                 <p class="text-danger">${message0}</p>
                             </div>
                         </div>
-                    </form:form>
+                    </form>
                 </div>
 
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH KẾT QUẢ TRẬN ĐẤU
+                        <button id="button_co_kq" class="btn btn-primary float-end">Trận đấu có kết quá</button>
+                        <button id="button_chua_kq" class="btn btn-danger float-end me-2">Trận đấu chưa kết quá</button>
                     </div>
                     <div class="card-body">
                         <table id="table">

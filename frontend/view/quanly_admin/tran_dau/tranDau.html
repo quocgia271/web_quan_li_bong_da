@@ -53,12 +53,14 @@
             <div class="container-fluid px-4">
                 <div class="card-header">
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRẬN ĐẤU</label>
+                    
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trận Đấu</label>
                             <input path="maTranDau" type="text" class="form-control" id="maTranDau" required readonly />
+                            
                         </div>
 
                         <!-- <div class="col-md-3">
@@ -144,12 +146,14 @@
                                 <p class="text-danger">${message0}</p>
                             </div>
                         </div>
-                        </form:form>
+                        </form>
                 </div>
 
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH TRẬN ĐẤU
+                        <button id="button_co_kq" class="btn btn-primary float-end">Trận đấu có kết quá</button>
+                        <button id="button_chua_kq" class="btn btn-danger float-end me-2">Trận đấu chưa kết quá</button>
                     </div>
                     <div class="card-body">
                         <table id="table">
@@ -197,6 +201,78 @@
                 </div>
             </div>
         </main>
+
+        <div id="modalKetQua" class="modal">
+            <div class="modal-content">
+               
+                <h5>Sửa kết quả trận đấu</h5>
+                <div id="formKetQua">
+
+                    <div>
+                        <label>Số bàn đội 1:</label>
+                        <input type="number" id="soBanDoi1" min="0">
+                    </div>
+
+                    <div>
+                        <label>Số bàn đội 2:</label>
+                        <input type="number" id="soBanDoi2" min="0">
+                    </div>
+                    <div>
+                        <label>Ghi Chú:</label>
+                        <input type="text" id="ghiChu">
+                    </div>
+
+                    <div>
+                        <label>Đội thắng:</label>
+                        <select id="doiThang" required>
+                            <option value="">-- Chọn đội thắng --</option>
+                            <option id="optionDoi1" ></option>
+                            <option id="optionDoi2" ></option>
+                        </select>
+                    </div>
+
+                    <button id="bt_luuKQ" type="button" class="btn btn-success">Lưu kết quả</button>
+                    <button id="bt_huyThayDoi" type="button" class="btn btn-danger btn-sm">Hủy thay đổi</button>
+
+
+                  
+                </div>
+            </div>
+        </div>
+
+
+        <style>
+            /* Thêm vào file CSS của bạn */
+            .modal {
+                display: none;
+                /* Mặc định ẩn */
+                position: fixed;
+                z-index: 9999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-content {
+                background-color: #fff;
+                margin: 10% auto;
+                padding: 20px;
+                width: 400px;
+                border-radius: 10px;
+                position: relative;
+            }
+
+            .close {
+                position: absolute;
+                right: 10px;
+                top: 5px;
+                font-size: 24px;
+                cursor: pointer;
+            }
+        </style>
 
 
 
