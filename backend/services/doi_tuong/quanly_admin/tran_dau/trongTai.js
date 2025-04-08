@@ -7,7 +7,8 @@ const ngaySinh = document.getElementById("ngaySinh");
 const maGioiTinh = document.getElementById("maGioiTinh");
 
 const hinhAnh = document.getElementById("hinhAnh");
-const url_hinhAnhMoi = document.getElementById("hinhAnhFile");
+const inputFile = document.getElementById("hinhAnhFile");
+const form = document.getElementById("inputForm");
 
 document.addEventListener("DOMContentLoaded", async function () {
     await viewTbody();
@@ -38,15 +39,6 @@ async function viewTbody() {
             hinh_anh = "/frontend/public/images/cat-2.png";
         } else {
             hinh_anh = await hamChung.getImage(item.hinh_anh);
-            console.log(hinh_anh);
-            if(hinh_anh === null){
-                hinh_anh = "/frontend/public/images/cat-2.png";
-            }
-            else{
-                hinh_anh = (await hamChung.getImage(item.hinh_anh)).url;
-            }
-           //console.log(await hamChung.getImage(item.hinh_anh));
-            console.log(hinh_anh);
         }
         // console.log(hinh_anh);
         row.innerHTML = `
@@ -76,20 +68,6 @@ async function viewTbody() {
 async function handleLuuThayDoi(event) {
     event.preventDefault(); // Ngừng hành động gửi form mặc định
 
-    const inputFile = document.getElementById('hinhAnhFile'); // Thẻ input file
-
-
-    // const hinhAnhMoi = await hamChung.uploadImage('C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/people.jpg');
-    // const urlFoderImage = 'C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/';
-
-    const urlFoderImage = GlobalStore.getLinkFoderImage();
-
-
-
-
-
-
-    const form = document.getElementById("inputForm");
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
@@ -98,17 +76,13 @@ async function handleLuuThayDoi(event) {
     let formData = {};
     let id_Hinh_anh_thay = "";
     //  không chọn hình ảnh mới
-    if (url_hinhAnhMoi.value === "")
+    if (inputFile.value === "")
         id_Hinh_anh_thay = hinhAnh.value;
     // chọn hình ảnh mới thì đưa ảnh mới lên và lấy id
     else {
-        const fileNameImage = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
-        const hinhAnhMoi = await hamChung.uploadImage(urlFoderImage + fileNameImage);
-        // console.log(fileNameImage);
-        // console.log(hinhAnhMoi);
-        // console.log(hinhAnhMoi.public_id);
-        id_Hinh_anh_thay = hinhAnhMoi.public_id;
+        id_Hinh_anh_thay = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
     }
+    id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
     // thêm mới
     if (maTrongTai.value === "") {
         formData = {
@@ -134,7 +108,11 @@ async function handleLuuThayDoi(event) {
         alert("Sửa thành công!");
     }
     console.log(formData);
-    viewTbody();
+     // phần này là phần cập nhật ảnh lên server
+     if (inputFile.value != "") {
+        await hamChung.uploadImage(inputFile.files[0]);
+    }
+    // viewTbody();
 }
 
 // Xử lý tải lại trang

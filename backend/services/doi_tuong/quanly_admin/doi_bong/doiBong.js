@@ -6,11 +6,11 @@ const tenDoiBong = document.getElementById("tenDoiBong");
 const quocGia = document.getElementById("quocGia");
 const maGioiTinh = document.getElementById("maGioiTinh");
 const hinhAnh = document.getElementById("logo");
-const url_hinhAnhMoi = document.getElementById("logoFile");
-
+const inputFile = document.getElementById("logoFile");
+const form = document.getElementById("inputForm");
 const maQlDoiBong = document.getElementById("maQlDoiBong");
 
-document.addEventListener("DOMContentLoaded", async function (event) {
+document.addEventListener("DOMContentLoaded", async function () {
     loadDanhSachNguoiDung_quanLyDoiBong();
     await viewTbody();
     // console.log(loadDanhSachNguoiDung_quanLyDoiBong());
@@ -36,15 +36,7 @@ async function viewTbody() {
             hinh_anh = "/frontend/public/images/cat-2.png";
         } else {
             hinh_anh = await hamChung.getImage(item.logo);
-            console.log(hinh_anh);
-            if (hinh_anh === null) {
-                hinh_anh = "/frontend/public/images/cat-2.png";
-            }
-            else {
-                hinh_anh = (await hamChung.getImage(item.logo)).url;
-            }
-            //console.log(await hamChung.getImage(item.hinh_anh));
-            console.log(hinh_anh);
+            
         }
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_doi_bong}</td>
@@ -70,10 +62,10 @@ async function viewTbody() {
 async function handleLuuThayDoi(event) {
     event.preventDefault();
 
-    const inputFile = document.getElementById('logoFile'); // Thẻ input file
-    const urlFoderImage = GlobalStore.getLinkFoderImage();
+    // const inputFile = document.getElementById('logoFile'); // Thẻ input file
+    // const urlFoderImage = GlobalStore.getLinkFoderImage();
 
-    const form = document.getElementById("inputForm");
+    // const form = document.getElementById("inputForm");
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
@@ -82,17 +74,14 @@ async function handleLuuThayDoi(event) {
     let formData = {};
     let id_Hinh_anh_thay = "";
     //  không chọn hình ảnh mới
-    if (url_hinhAnhMoi.value === "")
+    if (inputFile.value === "")
         id_Hinh_anh_thay = hinhAnh.value;
-    // chọn hình ảnh mới thì đưa ảnh mới lên và lấy id
     else {
-        const fileNameImage = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
-        const hinhAnhMoi = await hamChung.uploadImage(urlFoderImage + fileNameImage);
-        // console.log(fileNameImage);
-        // console.log(hinhAnhMoi);
-        // console.log(hinhAnhMoi.public_id);
-        id_Hinh_anh_thay = hinhAnhMoi.public_id;
+        id_Hinh_anh_thay = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
     }
+    id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
+    console.log(id_Hinh_anh_thay);
+
     if (maDoiBong.value === "") {
         formData = {
             ma_doi_bong: await hamChung.taoID_theoBang("doi_bong"),
@@ -117,7 +106,10 @@ async function handleLuuThayDoi(event) {
         alert("Sửa thành công!");
     }
     console.log(formData);
-    viewTbody();
+    if (inputFile.value != "") {
+        await hamChung.uploadImage(inputFile.files[0]);
+    }
+ //   viewTbody();
 }
 
 // Xử lý tải lại trang

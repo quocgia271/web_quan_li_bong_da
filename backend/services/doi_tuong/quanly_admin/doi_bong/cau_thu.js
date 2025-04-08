@@ -83,6 +83,7 @@ async function handleLuuThayDoi(event) {
         id_Hinh_anh_thay = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
     }
     id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
+
     console.log(id_Hinh_anh_thay);
     if (maCauThu.value === "") {
         formData = {
@@ -120,7 +121,7 @@ async function handleLuuThayDoi(event) {
         await hamChung.uploadImage(inputFile.files[0]);
     }
 
-    viewTbody();
+    //viewTbody();
 }
 
 // Xử lý tải lại trang

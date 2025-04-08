@@ -76,6 +76,17 @@ def get_image_url(public_id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Không có ảnh trên cloudinary"}), 500
-
+    
+@app.route('/api/image/<public_id>', methods=['DELETE'])
+def delete_image(public_id):
+    try:
+        result = cloudinary.uploader.destroy(public_id)
+        if result.get("result") == "ok":
+            return jsonify({"message": f"Đã xóa ảnh {public_id} thành công"})
+        else:
+            return jsonify({"error": f"Không thể xóa ảnh: {result.get('result')}"}), 400
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Lỗi khi xóa ảnh trên Cloudinary"}), 500
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=port)

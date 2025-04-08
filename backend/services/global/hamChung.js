@@ -314,7 +314,7 @@ async function xoa(keys, table_name) {
 
 async function getImage(publicId) {
     if(!publicId) {
-        console.error("publicId không hợp lệ:", publicId);
+       // console.error("publicId không hợp lệ:", publicId);
         return null;
     }
     try {
@@ -366,33 +366,32 @@ async function uploadImage(file) {
     }
 }
 
+async function deleteImage(publicId) {
+    if (!publicId) {
+        alert('Thiếu public_id để xóa ảnh.');
+        return;
+    }
 
-// /** 🔴 Hàm xóa ảnh */
-// async function deleteImage(public_id) {
-//     const link = "deleteImage";
-//     const url = `${GlobalStore.getLinkCongAPI()}${link}`;
-//     const data = { public_id };
+    try {
+        const response = await fetch(`http://localhost:5000/api/image/${publicId}`, {
+            method: 'DELETE'
+        });
 
-//     console.log("Gửi DELETE request tới:", url);
-//     console.log("Dữ liệu gửi đi:", data);
+        const data = await response.json();
 
-//     try {
-//         const response = await fetch(url, {
-//             method: "DELETE",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(data),
-//         });
+        if (response.ok) {
+            alert(`Đã xóa ảnh thành công: ${publicId}`);
+            console.log(data.message);
+        } else {
+            alert(`Xóa ảnh thất bại: ${data.error}`);
+            console.error('Lỗi:', data.error);
+        }
+    } catch (error) {
+        console.error('Lỗi khi gọi API xóa ảnh:', error);
+    }
+}
 
-//         const result = await response.json();
-//         if (!response.ok) throw new Error(result.error || "Delete failed");
 
-//         console.log("✅ Xóa ảnh thành công:", result);
-//         return result;
-//     } catch (error) {
-//         console.error("❌ Lỗi xóa ảnh:", error.message);
-//         return null;
-//     }
-// }
 function doiKhoangTrangThanhGachDuoi(tenFile) {
     return tenFile.replace(/\s+/g, '_');
 }
