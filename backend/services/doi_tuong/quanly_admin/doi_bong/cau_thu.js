@@ -9,7 +9,8 @@ const maGioiTinh = document.getElementById("maGioiTinh");
 const maViTri = document.getElementById("maViTri");
 const maDoiBong = document.getElementById("maDoiBong");
 const hinhAnh = document.getElementById("hinhAnh");
-const url_hinhAnhMoi = document.getElementById("hinhAnhFile");
+const inputFile = document.getElementById("hinhAnhFile");
+const form = document.getElementById("inputForm");
 
 document.addEventListener("DOMContentLoaded", async function () {
     loadDanhSachViTri();
@@ -40,15 +41,6 @@ async function viewTbody() {
             hinh_anh = "/frontend/public/images/cat-2.png";
         } else {
             hinh_anh = await hamChung.getImage(item.hinh_anh);
-            console.log(hinh_anh);
-            if(hinh_anh === null){
-                hinh_anh = "/frontend/public/images/cat-2.png";
-            }
-            else{
-                hinh_anh = (await hamChung.getImage(item.hinh_anh)).url;
-            }
-           //console.log(await hamChung.getImage(item.hinh_anh));
-            console.log(hinh_anh);
         }
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_cau_thu}</td>
@@ -73,44 +65,25 @@ async function viewTbody() {
 }
 
 // Thêm/Sửa cầu thủ
+// Thêm/Sửa cầu thủ
 async function handleLuuThayDoi(event) {
     event.preventDefault();
-    const inputFile = document.getElementById('hinhAnhFile'); // Thẻ input file
+    // const inputFile = document.getElementById('hinhAnhFile'); // Thẻ input file
 
-
-    // const hinhAnhMoi = await hamChung.uploadImage('C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/people.jpg');
-    // const urlFoderImage = 'C:/Users/vanti/Desktop/quan_ly_tran_dau/frontend/public/images/images_csdl/';
-
-    const urlFoderImage = GlobalStore.getLinkFoderImage();
-
-
-    const form = document.getElementById("inputForm");
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
-    if (!maViTri.value) {
-        alert("Vui lòng chọn một đội bóng!");
-        return;
-    }
-    if (!maDoiBong.value) {
-        alert("Vui lòng chọn một vị trí!");
-        return;
-    }
-
     let formData = {};
     let id_Hinh_anh_thay = "";
-    if (url_hinhAnhMoi.value === "")
+    // nếu có hình ảnh mới thì lấy tên hình ảnh đó ra 
+    if (inputFile.value === "")
         id_Hinh_anh_thay = hinhAnh.value;
-    // chọn hình ảnh mới thì đưa ảnh mới lên và lấy id
     else {
-        const fileNameImage = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
-        const hinhAnhMoi = await hamChung.uploadImage(urlFoderImage + fileNameImage);
-        // console.log(fileNameImage);
-        // console.log(hinhAnhMoi);
-        // console.log(hinhAnhMoi.public_id);
-        id_Hinh_anh_thay = hinhAnhMoi.public_id;
+        id_Hinh_anh_thay = inputFile.files[0].name; // Lấy tệp đầu tiên (nếu có)
     }
+    id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
+    console.log(id_Hinh_anh_thay);
     if (maCauThu.value === "") {
         formData = {
             ma_cau_thu: await hamChung.taoID_theoBang("cau_thu"),
@@ -124,6 +97,8 @@ async function handleLuuThayDoi(event) {
         };
         await hamChung.them(formData, "cau_thu");
         alert("Thêm thành công!");
+
+        // update ảnh nếu cócó
     } else {
         formData = {
             ma_cau_thu: maCauThu.value,
@@ -138,8 +113,14 @@ async function handleLuuThayDoi(event) {
         await hamChung.sua(formData, "cau_thu");
         alert("Sửa thành công!");
     }
+
     console.log(formData);
-   // viewTbody();
+    // phần này là phần cập nhật ảnh lên server
+    if (inputFile.value != "") {
+        await hamChung.uploadImage(inputFile.files[0]);
+    }
+
+    viewTbody();
 }
 
 // Xử lý tải lại trang

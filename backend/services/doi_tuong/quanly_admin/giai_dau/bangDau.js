@@ -40,6 +40,7 @@ async function handleLuuThayDoi(event) {
     event.preventDefault(); // Ngăn chặn reload
 
     const form = document.getElementById("inputForm");
+    
 
     if (!form.checkValidity()) {
         form.reportValidity();

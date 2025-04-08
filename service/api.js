@@ -5,27 +5,29 @@ const express = require("express");
 const mysql = require("mysql2");    // kết nối trực tiếp với mysql
 const cors = require("cors");   // cho phép các tài nguyên được tải từ một tên miền khác với tên miền mà trang web đang chạy
 // cấu hình upload ảnh
-const cloudinary = require('cloudinary').v2;   // cấu hình cloudinary// hình như cho nó update
-const dotenv = require('dotenv');            // cấu hình biến môi trường
-const fs = require('fs');                          // đọc file
-const path = require('path'); // Import path module  
+// const multer = require('multer');
+// const cloudinary = require('cloudinary').v2;   // cấu hình cloudinary// hình như cho nó update
+// const dotenv = require('dotenv');            // cấu hình biến môi trường
+// const fs = require('fs');     
+// const upload = multer({ dest: 'uploads/' }); // Lưu file tạm trước khi upload lên Cloudinary
+
+                     // đọc file
+// const path = require('path'); // Import path module  
 
 
 //////// 
 const app = express();       // tạo 1 ứng dụng express
 const port = 4002;           // api chạy trên cổng
 
-dotenv.config();        // cấu hình biến môi trường 
+// dotenv.config();        // cấu hình biến môi trường 
 // Cấu hình Cloudinary
-cloudinary.config({
-    cloud_name: 'dyilzwziv',          // tên của dự án trên cloudinary
-    api_key: '215441275658421',
-    api_secret: 'pMiC5-j_zWwvmOlkgohQ62cyQsY'
-});
-const cloudName = cloudinary.config().cloud_name;     // lấy tên cloud
+// cloudinary.config({
+//     cloud_name: 'dyilzwziv',          // tên của dự án trên cloudinary
+//     api_key: '215441275658421',
+//     api_secret: 'pMiC5-j_zWwvmOlkgohQ62cyQsY'
+// });
+// const cloudName = cloudinary.config().cloud_name;     // lấy tên cloud
 // cái là là đường dẫn ảnh theo cái id á
-const BASE_URL = `https://res.cloudinary.com/${cloudName}/image/upload`;
-
 
 // Sử dụng CORS cho tất cả các nguồn
 app.use(cors());
@@ -49,6 +51,8 @@ db.connect((err) => {
     }
     console.log("Kết nối cơ sở dữ liệu thành công!");
 });
+
+
 
 // Danh sách bảng và khóa chính tương ứng
 const tables = {
@@ -266,133 +270,6 @@ Object.entries(tables).forEach(([table, keys]) => {
 
 
 
-});
-
-
-
-app.get('/api/imageCloudinary/:public_id', async (req, res) => {
-
-    const { public_id } = req.params;
-
-    try {
-        const result = await cloudinary.api.resource(public_id);
-        const version = `v${result.version}`;
-        const imageUrl = `${BASE_URL}/${version}/${public_id}.jpg`;
-        console.log(imageUrl);
-        res.json({
-            message: "Image URL retrieved successfully",
-            url: imageUrl
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to retrieve image",
-            error: error.message
-        });
-    }
-});
-
-
-
-// API tải ảnh lên Cloudinary với tên file gốc
-app.post('/api/imageCloudinary', async (req, res) => {
-    try {
-        const { imagePath } = req.body;
-
-        if (!imagePath) {
-            return res.status(400).json({ error: 'Image path is required' });
-        }
-
-        if (!fs.existsSync(imagePath)) {
-            return res.status(400).json({ error: 'File does not exist' });
-        }
-
-        // Lấy tên file từ đường dẫn
-        const fileName = path.basename(imagePath, path.extname(imagePath));
-
-        // Upload lên Cloudinary với public_id là tên file gốc
-        const uploadResult = await cloudinary.uploader.upload(imagePath, {
-            public_id: fileName
-        });
-
-        res.json({
-            message: 'Upload successful',
-            data: {
-                public_id: uploadResult.public_id,
-                url: uploadResult.secure_url
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-app.delete('/api/imageCloudinary/:public_id', async (req, res) => {
-    const { public_id } = req.params;
-
-    try {
-        // Xóa ảnh khỏi Cloudinary
-        const result = await cloudinary.uploader.destroy(public_id);
-
-        if (result.result === 'ok') {
-            res.json({
-                message: "Image deleted successfully",
-                public_id: public_id
-            });
-        } else {
-            res.status(500).json({
-                message: "Failed to delete image",
-                error: result
-            });
-        }
-    } catch (error) {
-        res.status(500).json({
-            message: "Error deleting image",
-            error: error.message
-        });
-    }
-});
-app.put('/api/imageCloudinary/:public_id', async (req, res) => {
-    const { public_id } = req.params;
-    const { newImagePath } = req.body;
-
-    try {
-        if (!newImagePath) {
-            return res.status(400).json({ error: 'New image path is required' });
-        }
-
-        if (!fs.existsSync(newImagePath)) {
-            return res.status(400).json({ error: 'File does not exist' });
-        }
-
-        // Xóa ảnh cũ khỏi Cloudinary
-        const deleteResult = await cloudinary.uploader.destroy(public_id);
-
-        if (deleteResult.result !== 'ok') {
-            return res.status(500).json({
-                message: "Failed to delete old image",
-                error: deleteResult
-            });
-        }
-
-        // Lấy tên file từ đường dẫn mới
-        const fileName = path.basename(newImagePath, path.extname(newImagePath));
-
-        // Upload ảnh mới lên Cloudinary
-        const uploadResult = await cloudinary.uploader.upload(newImagePath, {
-            public_id: fileName
-        });
-
-        res.json({
-            message: 'Image updated successfully',
-            data: {
-                public_id: uploadResult.public_id,
-                url: uploadResult.secure_url
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
 });
 
 

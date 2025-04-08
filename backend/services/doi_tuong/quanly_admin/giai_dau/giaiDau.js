@@ -66,6 +66,7 @@ async function handleLuuThayDoi(event) {
             gioi_tinh: maGioiTinh.value,
             mo_ta: moTa.value
         };
+        console.log("dang them " + await hamChung.taoID_theoBang("giai_dau"));
     } else {
         formData = {
             ma_giai_dau: maGiaiDau.value,
@@ -76,6 +77,7 @@ async function handleLuuThayDoi(event) {
             gioi_tinh: maGioiTinh.value,
             mo_ta: moTa.value
         };
+        console.log("dang xóa");
     }
     if (maGiaiDau.value === "") {
         await hamChung.them(formData, "giai_dau");

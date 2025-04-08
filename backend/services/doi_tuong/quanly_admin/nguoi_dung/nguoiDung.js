@@ -57,25 +57,34 @@ async function handleLuuThayDoi(event) {
     if (maNguoiDung.value === "") {
         formData = {
             ma_nguoi_dung: await hamChung.taoID_theoBang("nguoi_dung"),
-            tai_khoan: taiKhoan.value,
+            // tai_khoan: taiKhoan.value,
             ho_ten: hoTen.value,
             gioi_tinh: gioiTinh.value,
             email: email.value,
             so_dien_thoai: soDienThoai.value,
             ngay_tao: ngayTao.value
         };
-        await hamChung.them(formData, "nguoi_dung");
-        alert("Thêm thành công!");
     } else {
         formData = {
             ma_nguoi_dung: maNguoiDung.value,
-            tai_khoan: taiKhoan.value,
+            // tai_khoan: taiKhoan.value,
             ho_ten: hoTen.value,
             gioi_tinh: gioiTinh.value,
             email: email.value,
             so_dien_thoai: soDienThoai.value,
             ngay_tao: ngayTao.value
         };
+    }
+
+    // Chỉ thêm `tai_khoan` nếu nó không rỗng
+    if (taiKhoan.value.trim() !== "") {
+        formData.tai_khoan = taiKhoan.value;
+    }
+
+    if (maNguoiDung.value === "") {
+        await hamChung.them(formData, "nguoi_dung");
+        alert("Thêm thành công!");
+    } else {
         await hamChung.sua(formData, "nguoi_dung");
         alert("Sửa thành công!");
     }

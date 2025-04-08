@@ -20,6 +20,9 @@ const hamChung = {
     xoa(data, table_name) {
         return xoa(data, table_name)
     },
+    doiKhoangTrangThanhGachDuoi(tenFile) {
+        return doiKhoangTrangThanhGachDuoi(tenFile)
+    },
     getImage(public_id) {
         return getImage(public_id)
     },
@@ -309,99 +312,60 @@ async function xoa(keys, table_name) {
     }
 }
 
-/** 🔵 Hàm lấy ảnh từ Cloudinary theo `public_id` */
-async function getImage(public_id) {
-    const link = `imageCloudinary/${public_id}`;
-    const url = `${GlobalStore.getLinkCongAPI()}${link}`;
-
-    console.log("Gửi GET request tới:", url);
-
+async function getImage(publicId) {
+    if(!publicId) {
+        console.error("publicId không hợp lệ:", publicId);
+        return null;
+    }
     try {
-        const response = await fetch(url, { method: "GET" });
+        const response = await fetch(`http://localhost:5000/api/image/${publicId}`);
+        const data = await response.json();
 
-        const result = await response.json();
-        // if (!response.ok) throw new Error(result.error || "Get image failed");
-
-        // console.log("✅ Lấy ảnh thành công:", result);
-        return result;
+        if (data.imageUrl) {
+        //    console.log("Link ảnh:", data.imageUrl);
+            return data.imageUrl;
+        } else {
+           // console.error("Không lấy được link ảnh", data);
+            return null;
+        }
     } catch (error) {
-        // console.error("❌ Lỗi lấy ảnh:", error.message);
+      //  console.error("Lỗi khi gọi API lấy ảnh:", error);
         return null;
     }
 }
-// async function uploadImage(filePath) {
-//     try {
-//         //'http://localhost:4002/api/imageCloudinary'
-//         const link = "imageCloudinary";
-//         const url = `${GlobalStore.getLinkCongAPI()}${link}`;
-//         // const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
-//         const response = await fetch(url, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ imagePath: filePath })
-//         });
+async function uploadImage(file) {
+    if (!file) {
+        alert('Vui lòng chọn một file ảnh.');
+        return null;
+    }
 
-//         const data = await response.json();
-//         return data.data;
-//     } catch (error) {
-//         console.error('Error:', error.message);
-//     }
-//     return null;
-// }
+    const formData = new FormData();
+    formData.append('image', file);
 
-// Hàm tải ảnh lên
-async function uploadImage(form) {
     try {
-        // Gửi yêu cầu tải ảnh lên server
-        const response = await fetch('http://localhost:4002/api/upload', {
+        alert("Đang upload ảnh...");
+        const response = await fetch('http://localhost:5000/api/upload', {
             method: 'POST',
-            body: form,
+            body: formData
         });
 
+        if (!response.ok) throw new Error('Upload không thành công');
+
         const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-            // Nếu tải lên thành công, cập nhật URL ảnh
-            document.getElementById('hinhAnh').value = data.imageUrl; // Cập nhật trường #hinhAnh
+
+        if (data.imageUrl) {
+            console.log('Upload thành công! Link ảnh:', data.imageUrl);
+            return data.imageUrl;
         } else {
-            alert("Lỗi tải ảnh lên: " + data.error);
+            console.error('Upload thất bại:', data);
+            return null;
         }
     } catch (error) {
-        console.error("Lỗi: ", error);
-        alert("Có lỗi xảy ra khi tải ảnh lên.");
+        console.error('Lỗi upload:', error);
+        return null;
     }
-    return null;
 }
 
-
-// /** 🟡 Hàm cập nhật ảnh */
-// async function updateImage(public_id, newImagePath) {
-//     const link = "updateImage";
-//     const url = `${GlobalStore.getLinkCongAPI()}${link}`;
-//     const data = { public_id, newImagePath };
-
-//     console.log("Gửi PUT request tới:", url);
-//     console.log("Dữ liệu gửi đi:", data);
-
-//     try {
-//         const response = await fetch(url, {
-//             method: "PUT",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(data),
-//         });
-
-//         const result = await response.json();
-//         if (!response.ok) throw new Error(result.error || "Update failed");
-
-//         console.log("✅ Cập nhật ảnh thành công:", result);
-//         return result;
-//     } catch (error) {
-//         console.error("❌ Lỗi cập nhật ảnh:", error.message);
-//         return null;
-//     }
-// }
 
 // /** 🔴 Hàm xóa ảnh */
 // async function deleteImage(public_id) {
@@ -429,6 +393,9 @@ async function uploadImage(form) {
 //         return null;
 //     }
 // }
+function doiKhoangTrangThanhGachDuoi(tenFile) {
+    return tenFile.replace(/\s+/g, '_');
+}
 
 
 // Gắn vào window để có thể truy cập ở mọi nơi

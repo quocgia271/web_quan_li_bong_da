@@ -54,65 +54,14 @@
                 <div class="card-header">
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ CẦU THỦ</label>
                 </div>
-                <!-- sửa kiểu div thành kiểu form thì sao  -->
                 <div class="card-header">
-                    <form class="row mb-3" id="inputForm">
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Cầu Thủ</label>
-                            <input type="text" class="form-control" id="maCauThu" required readonly />
-                        </div>
+                    <div class="col-md-3">
+                        <input type="file" id="hinhAnhFile" accept="image/*">
+                        <button id="uploadButton" type="button">Upload</button>
 
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Họ Tên</label>
-                            <input type="text" class="form-control" id="hoTen" required />
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Ngày Sinh</label>
-                            <input type="date" class="form-control" id="ngaySinh" required />
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Số Áo</label>
-                            <input type="number" class="form-control" id="soAo" required />
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Giới Tính</label>
-                            <select class="form-control" id="maGioiTinh" required>
-                                <option value="nam">Nam</option>
-                                <option value="nữ">Nữ</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Vị Trí</label>
-                            <select class="form-control" id="maViTri" required>
-                                <option value="">-- Chọn Vị Trí --</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Đội Bóng</label>
-                            <select class="form-control" id="maDoiBong" required>
-                                <option value="">-- Chọn Đội Bóng --</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Hình Ảnh</label>
-                            <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="hinhAnh" readonly />
-                            <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="hinhAnhFile" accept="image/*" />
-                        </div>
-                        <div class='parent col-md-12 mt-3'>
-                            <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
-                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
-                                    Trang</button>
-                            </div>
-                        </div>
-                    </form>
+                        <img id="previewImage" src="" alt="Xem trước ảnh" style="max-width: 200px; display: none;">
+                        <p id="uploadStatus"></p>
+                    </div>
                 </div>
 
                 <div class="card mb-4">
@@ -164,7 +113,7 @@
             }
         }
     </script>
-    <script src="/backend/services/doi_tuong/quanly_admin/doi_bong/cau_thu.js"></script>
+    <script src="/frontend/view/test_images.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
 
