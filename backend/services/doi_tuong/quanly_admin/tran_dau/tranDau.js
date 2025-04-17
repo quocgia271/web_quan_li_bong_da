@@ -59,10 +59,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Hiển thị danh sách trận đấu
 async function layKetQua(ma_tran_dau) {
     const data = await hamChung.layThongTinTheo_ID("ket_qua_tran_dau", ma_tran_dau);
+    const data_doiThang = await hamChung.layThongTinTheo_ID("doi_bong", data.ma_doi_thang);
     let stringKetQua = "--";
     if (data != null) {
 
-        stringKetQua = data.ma_doi_thang + " " + data.so_ban_doi_1 + ":" + data.so_ban_doi_2;
+        stringKetQua = data_doiThang.ten_doi_bong + " " + data.so_ban_doi_1 + ":" + data.so_ban_doi_2;
     }
 
     return stringKetQua;
