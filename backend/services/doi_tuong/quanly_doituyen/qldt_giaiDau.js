@@ -10,6 +10,9 @@ const maGioiTinh = document.getElementById("maGioiTinh");
 const moTa = document.getElementById("moTa");
 
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Đã vào trang quản lý đội bóng");
+    console.log(DoiTuyen.getDoiTuyen_dangChon());
+    console.log(GlobalStore.getUsername());
     viewTbody();
     // Gán sự kiện cho nút
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
@@ -18,7 +21,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Hiển thị danh sách giải đấu
 async function viewTbody() {
+    const giaiDauThamGia = await tim_giaiDau_doiTuyen_thamGia(DoiTuyen.getDoiTuyen_dangChon());
+    console.log(giaiDauThamGia); // là 1 object
+
     const data = await hamChung.layDanhSach("giai_dau"); // Lấy danh sách giải đấu
+    // tìm danh sách giải đấu mà đội tuyển đó tham gia 
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
@@ -140,4 +147,10 @@ function button_xoa(data) {
             }
         });
     });
+}
+async function tim_giaiDau_doiTuyen_thamGia(ma_doi_bong) {
+    const data = await hamChung.layDanhSach("cau_thu_giai_dau"); // Lấy danh sách giải đấu
+    const giaiDauThamGia = data.filter(item => item.ma_doi_bong === ma_doi_bong);
+    return giaiDauThamGia;
+
 }

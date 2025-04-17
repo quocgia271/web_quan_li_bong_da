@@ -35,7 +35,7 @@
     <div id="chen"></div>
     <script>
         // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
-        fetch('/frontend/public/src/common/quanly/header.html')
+        fetch('/frontend/public/src/common/quanly_doiBong/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('chen').innerHTML = data;
@@ -94,10 +94,15 @@
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Đội Bóng</label>
-                            <select class="form-control" id="maDoiBong" required>
+                            <select class="form-control" id="maDoiBong" readonly required>
                                 <option value="">-- Chọn Đội Bóng --</option>
                             </select>
                         </div>
+                        <!-- <div class="col-md-3">
+                            <label class="font-weight-bold">Đội Bóng</label>
+                            <input type="number" class="form-control" id="maDoiBong" min="0" required readonly/>
+                        </div> -->
+
                         <div class="col-md-3">
                             <label class="font-weight-bold">Hình Ảnh</label>
                             <!-- Input hiển thị tên file hoặc URL ảnh -->
@@ -107,7 +112,7 @@
                         </div>
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
+                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
                                 <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                     Trang</button>
                             </div>
@@ -164,7 +169,7 @@
             }
         }
     </script>
-    <script src="/backend/services/doi_tuong/quanly_admin/doi_bong/cau_thu.js"></script>
+    <script src="/backend/services/doi_tuong/quanly_doituyen/qldt_cau_thu.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
 

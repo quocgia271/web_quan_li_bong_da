@@ -13,6 +13,9 @@ const inputFile = document.getElementById("hinhAnhFile");
 const form = document.getElementById("inputForm");
 
 document.addEventListener("DOMContentLoaded", async function () {
+    console.log("Đã vào trang quản lý đội bóng");
+    console.log(DoiTuyen.getDoiTuyen_dangChon());
+    console.log(GlobalStore.getUsername());
     loadDanhSachViTri();
     loadDanhSachDoiBong();
     await viewTbody();
@@ -22,7 +25,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Hiển thị danh sách cầu thủ
 async function viewTbody() {
-    const data = await hamChung.layDanhSach("cau_thu");
+    const allCauThu = await hamChung.layDanhSach("cau_thu");
+
+    const maDoiBongDangChon = DoiTuyen.getDoiTuyen_dangChon();
+
+    const data = allCauThu.filter(cauThu => cauThu.ma_doi_bong === maDoiBongDangChon);
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
@@ -176,11 +183,32 @@ async function loadDanhSachViTri() {
 async function loadDanhSachDoiBong() {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>'; // Reset danh sách
-    const data = await hamChung.layDanhSach("doi_bong");
-    data.forEach(item => {
-        const option = document.createElement("option");
-        option.value = item.ma_doi_bong;
-        option.textContent = `${item.ma_doi_bong} - ${item.ten_doi_bong}`;
-        selectElement.appendChild(option);
-    });
+
+    const doiTuyenDangChon = await DoiTuyen.getDoiTuyen_dangChon();
+
+    selectElement.innerHTML = '<option value=""></option>'; // Reset
+
+    // Giả sử doiTuyenDangChon = 'VN'
+    const option = document.createElement('option');
+    option.value = doiTuyenDangChon;
+    option.textContent = doiTuyenDangChon;
+    selectElement.appendChild(option);
+
+    // Đặt giá trị mặc định
+    selectElement.value = doiTuyenDangChon;
+
+    
+    // const option = document.createElement("option");
+    // option.value = doiTuyenDangChon.ma_doi_bong;
+    // option.textContent = `${doiTuyenDangChon.ma_doi_bong} - ${doiTuyenDangChon.ten_doi_bong}`;
+    // option.selected = true; // Chọn mặc định
+    // selectElement.appendChild(option);
+
+    // const data = await hamChung.layDanhSach("doi_bong");
+    // data.forEach(item => {
+    //     const option = document.createElement("option");
+    //     option.value = item.ma_doi_bong;
+    //     option.textContent = `${item.ma_doi_bong} - ${item.ten_doi_bong}`;
+    //     selectElement.appendChild(option);
+    // });
 }

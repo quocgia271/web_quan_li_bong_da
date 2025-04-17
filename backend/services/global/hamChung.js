@@ -318,7 +318,10 @@ async function getImage(publicId) {
         return null;
     }
     try {
-        const response = await fetch(`http://localhost:5000/api/image/${publicId}`);
+        const url = GlobalStore.getLinkCongApi_image() + "/" + publicId;
+         const response = await fetch(url);
+      // const response = await fetch(`http://localhost:5000/api/image/${publicId}`);
+        console.log("Đường dẫn ảnh:", url);
         const data = await response.json();
 
         if (data.imageUrl) {
@@ -344,7 +347,8 @@ async function uploadImage(file) {
 
     try {
         alert("Đang upload ảnh...");
-        const response = await fetch('http://localhost:5000/api/upload', {
+        const url = GlobalStore.getLinkCongApi_image()
+        const response = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -371,9 +375,9 @@ async function deleteImage(publicId) {
         alert('Thiếu public_id để xóa ảnh.');
         return;
     }
-
+    const url = GlobalStore.getLinkCongApi_image() + "/" + publicId;
     try {
-        const response = await fetch(`http://localhost:5000/api/image/${publicId}`, {
+        const response = await fetch(url, {
             method: 'DELETE'
         });
 
@@ -391,7 +395,9 @@ async function deleteImage(publicId) {
     }
 }
 
-
+          
+// lúc mà upload ảnh lên thì public_id không được có khoảng trắng, nó sẽ tự động thay thế bằng dấu gạch dưới
+// nên khi lấy về thì phải thay thế lại bằng khoảng trắng
 function doiKhoangTrangThanhGachDuoi(tenFile) {
     return tenFile.replace(/\s+/g, '_');
 }
