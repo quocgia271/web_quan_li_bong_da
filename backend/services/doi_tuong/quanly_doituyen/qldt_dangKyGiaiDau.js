@@ -112,3 +112,11 @@ function button_dangKy(data) {
         document.getElementById("modalDangKy").style.display = "none";
     };
 }
+
+function dangKyGiaiDau (maGiaiDau, maDoiBong) {
+    const formData = {
+        ma_giai_dau: maGiaiDau,
+        ma_doi_bong: maDoiBong,
+    };
+    return hamChung.them(formData, "doi_tuyen_tham_giai_dau");
+}
