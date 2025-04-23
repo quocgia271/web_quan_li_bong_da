@@ -1,10 +1,11 @@
 const congAPI = 4002;
-const IPv4_Address =  "192.168.110.33";
+const IPv4_Address =  "192.168.1.46";
 // const linkCongAPI = "http://localhost:" + congAPI + "/api/";
 // ex : http://192.168.1.136:4002/api
 // ex : http://localhost:4002/api
 
 // const linkCongAPI = IPv4_Address +":"+ congAPI + "/api/";
+// C:\Users\vanti\Desktop\5_2\6A _ NMCN Phần Mềm_ Châu Văn Vân\DO_AN\quan_ly_tran_dau\service
 const linkCongAPI = "http://"+IPv4_Address +":"+ congAPI + "/api/";
 
 const GlobalStore = {

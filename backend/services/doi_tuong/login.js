@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(data_vaiTro.ten_vai_tro);
                 // alert("Đăng nhập thành công!");
                 if (data_vaiTro.ten_vai_tro == "Admin") {
-                    url = "/view/trungtam/tt_trangchu.html";
+                    url = "/frontend/view/quanly_admin/doi_bong/cau_thu.html";
+                    window.location.href = url;
+                    return;
                     //  alert("Đăng nhập thành công!");
                 }
                 // nếu tài khoản là quản lý đội bóng
