@@ -7,8 +7,9 @@ const spanTieuDe = document.getElementById("tieuDeLichThi");
 
 const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
 const matchListElement = document.getElementById("lichThiDauHomNay_list");
-let offset = -5; // Bắt đầu từ 5 ngày trước hôm nay
-const range = 10; // Số ngày hiển thị
+const range = 10;
+let offset = -Math.floor(range / 2); // ✅ giờ mới được dùng range
+
 
 let selectedDateElement = null;
 
@@ -16,50 +17,6 @@ let selectedDateElement = null;
 const urlParams = new URLSearchParams(window.location.search);
 let ngay_xem_param = urlParams.get('ngay_xem');
 let ma_giai_dau_param = urlParams.get('ma_giai_dau'); // 123
-
-
-
-// const scheduleData = [
-//     {
-//         giai: "Ngoại hạng Anh",
-//         vong: "Vòng 29 - đá muộn",
-//         matches: [
-//             {
-//                 time: "01:30 17/04",
-//                 team1: "Newcastle United",
-//                 logo1: "https://storage.googleapis.com/a1aa/image/7f6d2c3a-29ae-4421-671c-1f4721bcbb5a.jpg",
-//                 score: "5 - 0",
-//                 team2: "Crystal Palace",
-//                 logo2: "https://storage.googleapis.com/a1aa/image/fbbc6447-ff4a-4c62-2e57-d9aefdc5b652.jpg",
-//             }
-//         ]
-//     },
-//     {
-//         giai: "CUP C1",
-//         vong: "Tứ kết",
-//         matches: [
-//             {
-//                 time: "02:00 17/04",
-//                 team1: "Real Madrid",
-//                 logo1: "https://storage.googleapis.com/a1aa/image/c35fad8f-b462-4c02-1d22-6792534d490e.jpg",
-//                 score: "1 - 2",
-//                 team2: "Arsenal",
-//                 logo2: "https://storage.googleapis.com/a1aa/image/801511bf-877a-4cb3-2c97-5f3b48391929.jpg",
-//             },
-//             {
-//                 time: "02:00 17/04",
-//                 team1: "Inter Milan",
-//                 logo1: "https://storage.googleapis.com/a1aa/image/c32a2cb3-18e1-4de9-2dc1-c8a4632f478e.jpg",
-//                 score: "2 - 2",
-//                 team2: "Bayern Munich",
-//                 logo2: "https://storage.googleapis.com/a1aa/image/1ff3853b-ec93-4cd1-4cd3-1f8f11028fbc.jpg",
-//             }
-//         ]
-//     },
-//     // Tương tự cho các giải đấu khác...
-// ];
-
-
 
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -72,6 +29,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.location.href = url;
     }
     
+    if (ngay_xem_param) {
+        const today = new Date();
+        const selected = new Date(ngay_xem_param);
+    
+        // Tính số ngày giữa hôm nay và ngày được chọn
+        const diffTime = selected - today;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    
+        // Tính offset sao cho ngày được chọn nằm giữa
+        offset = diffDays - Math.floor(range / 2);
+    }
     // Khởi tạo lịch ban đầu
     renderDays();
 
@@ -85,16 +53,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     await view_danhSach_tranDau_vs_giaiDau(ngay_xem_param, ma_giai_dau_param);
 
    
-
-
-    // Sự kiện cho các mục Bảng xếp hạng và Kết quả thi đấu
-    document.getElementById("ranking").addEventListener("click", function () {
-        console.log("Bạn đã chọn Bảng xếp hạng");
-    });
-
-    document.getElementById("result").addEventListener("click", function () {
-        console.log("Bạn đã chọn Kết quả thi đấu");
-    });
     // Xử lý nút next/prev để chuyển ngày
     prevBtn.addEventListener('click', () => {
         offset -= 1;
@@ -105,6 +63,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         offset += 1;
         renderDays();
     });
+
+    
+
+    // Sự kiện cho các mục Bảng xếp hạng và Kết quả thi đấu
+    document.getElementById("ranking").addEventListener("click", function () {
+        console.log("Bạn đã chọn Bảng xếp hạng");
+    });
+
+    document.getElementById("result").addEventListener("click", function () {
+        console.log("Bạn đã chọn Kết quả thi đấu");
+    });
+
 
 
 
@@ -133,11 +103,22 @@ document.getElementById('lich').addEventListener('click', function () {
         });
 
         console.log("📅 Lịch đang hiển thị");
+
     } else {
         calendarContainer.classList.add('hidden');
         console.log("📅 Lịch đang ẩn");
     }
 });
+// click vào ngày trong lịch
+document.getElementById('ngayDienRa').addEventListener('change', function (e) {
+    const selectedDate = e.target.value;
+    console.log("📅 Ngày được chọn trong lịch là:", selectedDate);
+
+    const maGiai = new URLSearchParams(window.location.search).get('ma_giai_dau') || "ALL_giaiDau_today";
+    window.location.href = `/frontend/view/nguoihammo/home.html?ngay_xem=${selectedDate}&ma_giai_dau=${maGiai}`;
+});
+
+
 
 async function view_danhSach_tranDau_vs_giaiDau(ngay_xem_param, ma_giai_dau_param) {
     console.log("ma_giai_dau_param : ", ma_giai_dau_param);
@@ -186,19 +167,28 @@ function renderDays() {
         const date = new Date();
         date.setDate(today.getDate() + i);
 
+        const fullDate = date.toISOString().split('T')[0];
+        const isSelected = fullDate === ngay_xem_param; // So sánh với param ngày
+
         const isToday = i === 0;
         const dayName = isToday ? 'Hôm nay' : days[date.getDay()];
         const dayNumber = date.getDate();
-        const fullDate = date.toISOString().split('T')[0];
 
         // Tạo phần tử cho ngày
         const dayItem = document.createElement('div');
-        dayItem.className = `cursor-pointer px-2 py-1 rounded-lg hover:bg-gray-100 ${isToday ? 'text-orange-500 font-bold' : ''}`;
+        dayItem.className = `cursor-pointer px-2 py-1 rounded-lg hover:bg-gray-100 
+            ${isToday ? 'text-orange-500 font-bold' : ''} 
+            ${isSelected ? 'bg-orange-100 ring ring-orange-400' : ''}`;
         dayItem.setAttribute('data-date', fullDate);
         dayItem.innerHTML = `
-                <div>${dayName}</div>
-                <div class="font-bold text-gray-700 text-sm">${dayNumber}</div>
-            `;
+            <div>${dayName}</div>
+            <div class="font-bold text-gray-700 text-sm">${dayNumber}</div>
+        `;
+
+        // Nếu là ngày được chọn, gán vào biến `selectedDateElement`
+        if (isSelected) {
+            selectedDateElement = dayItem;
+        }
 
         // Sự kiện click vào ngày
         dayItem.addEventListener('click', function () {
@@ -210,8 +200,7 @@ function renderDays() {
 
             console.log('Ngày được chọn:', fullDate);
             const url = `/frontend/view/nguoihammo/home.html?ngay_xem=${fullDate}&ma_giai_dau=${loai_GiaiDau_all}`;
-            //frontend/view/nguoihammo/home.html?ngay_xem=1&ma_giai_dau=GD01
-            window.location.href = url; // Chuyển trang
+            window.location.href = url;
         });
 
         dayList.appendChild(dayItem);
@@ -495,12 +484,6 @@ async function stringKq_tranDau(maTranDau, maDoi1, maDoi2) {
         return stingKq_tranDau;
     }
     const dataDoiThang = await hamChung.layThongTinTheo_ID("doi_bong", data.ma_doi_thang)
-    // console.log(data);
-    // console.log(dataDoiThang.ma_doi_bong + " " + dataDoiThang.ten_doi_bong);
-
-
-    // console.log(data);
-
     let soban1 = data.so_ban_doi_1;
     let soban2 = data.so_ban_doi_2;
     let sobanLonNhat = Math.max(soban1, soban2);

@@ -49,12 +49,13 @@ async function viewTbody() {
         } else {
             hinh_anh = await hamChung.getImage(item.hinh_anh);
         }
+        // console.log(item.maGioiTinh)
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_cau_thu}</td>
             <td style="text-align: center;">${item.ho_ten}</td>
             <td style="text-align: center;">${item.ngay_sinh}</td>
             <td style="text-align: center;">${item.so_ao}</td>
-            <td style="text-align: center;">${item.ma_gioi_tinh}</td>
+            <td style="text-align: center;">${item.gioi_tinh}</td>
             <td style="text-align: center;">${item.ma_vi_tri}</td>
             <td style="text-align: center;">${item.ma_doi_bong}</td>
             <td style="text-align: center;"><img src="${hinh_anh}" alt="Hình ảnh" width="50"></td>
@@ -98,7 +99,7 @@ async function handleLuuThayDoi(event) {
             ho_ten: hoTen.value,
             ngay_sinh: ngaySinh.value,
             so_ao: soAo.value,
-            ma_gioi_tinh: maGioiTinh.value,
+            gioi_tinh: maGioiTinh.value,
             ma_vi_tri: maViTri.value,
             ma_doi_bong: maDoiBong.value,
             hinh_anh: id_Hinh_anh_thay
@@ -113,7 +114,7 @@ async function handleLuuThayDoi(event) {
             ho_ten: hoTen.value,
             ngay_sinh: ngaySinh.value,
             so_ao: soAo.value,
-            ma_gioi_tinh: maGioiTinh.value,
+            gioi_tinh: maGioiTinh.value,
             ma_vi_tri: maViTri.value,
             ma_doi_bong: maDoiBong.value,
             hinh_anh: id_Hinh_anh_thay
@@ -146,7 +147,7 @@ function button_sua(data) {
             hoTen.value = item.ho_ten;
             ngaySinh.value = item.ngay_sinh;
             soAo.value = item.so_ao;
-            maGioiTinh.value = item.ma_gioi_tinh;
+            maGioiTinh.value = item.gioi_tinh;
             maViTri.value = item.ma_vi_tri;
             maDoiBong.value = item.ma_doi_bong;
             console.log(item);

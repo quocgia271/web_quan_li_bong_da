@@ -48,19 +48,58 @@
             margin-top: 100px;
         }
     </style>
+
+    <div id="bangTrongTaiContainer" class="modal">
+        <div class="modal-content">
+
+            <h5>Sửa kết quả trận đấu</h5>
+            <div id="formKetQua">
+
+                <div>
+                    <label>Số bàn đội 1:</label>
+                    <input type="number" id="soBanDoi1" min="0">
+                </div>
+
+                <div>
+                    <label>Số bàn đội 2:</label>
+                    <input type="number" id="soBanDoi2" min="0">
+                </div>
+                <div>
+                    <label>Ghi Chú:</label>
+                    <input type="text" id="ghiChu">
+                </div>
+
+                <div>
+                    <label>Đội thắng:</label>
+                    <select id="doiThang" required>
+                        <option value="">-- Chọn đội thắng --</option>
+                        <option id="optionDoi1"></option>
+                        <option id="optionDoi2"></option>
+                    </select>
+                </div>
+
+                <button id="bt_luuKQ" type="button" class="btn btn-success">Lưu kết quả</button>
+                <button id="bt_huyThayDoi" type="button" class="btn btn-danger btn-sm">Hủy thay đổi</button>
+
+
+
+            </div>
+        </div>
+    </div>
+
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRẬN ĐẤU</label>
-                    
+
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trận Đấu</label>
                             <input path="maTranDau" type="text" class="form-control" id="maTranDau" required readonly />
-                            
+
                         </div>
 
                         <!-- <div class="col-md-3">
@@ -105,21 +144,31 @@
                             <input path="gioDienRa" type="time" class="form-control" id="gioDienRa" required />
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Sân Vận Động</label>
                             <input path="sanVanDong" type="text" class="form-control" id="sanVanDong" required />
-                        </div>
+                        </div> -->
 
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Sân Vận Động</label>
+                            <select class="form-control" id="sanVanDong" required>
+                                <option value="">-- Chọn Sân Vận Động --</option>
+                            </select>
+                        </div>
                         <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trọng Tài</label>
                             <input path="maTrongTai" type="text" class="form-control" id="maTrongTai" />
                         </div> -->
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="font-weight-bold">Mã Trọng Tài Chính</label>
                             <select class="form-control" id="maTrongTai" required>
                                 <option value="">-- Chọn Trọng Tài --</option>
                             </select>
+                        </div> -->
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Danh Sách Trọng Tài</label>
+                            <button id="button_xem_ds_trongTai">Xem Danh Sách</button>
                         </div>
 
                         <div class="col-md-3">
@@ -146,7 +195,7 @@
                                 <p class="text-danger">${message0}</p>
                             </div>
                         </div>
-                        </form>
+                    </form>
                 </div>
 
                 <div class="card mb-4">
@@ -204,38 +253,41 @@
 
         <div id="modalKetQua" class="modal">
             <div class="modal-content">
-               
-                <h5>Sửa kết quả trận đấu</h5>
+
+                <h5>Danh Sách Trọng Tài</h5>
                 <div id="formKetQua">
 
-                    <div>
-                        <label>Số bàn đội 1:</label>
-                        <input type="number" id="soBanDoi1" min="0">
-                    </div>
 
                     <div>
-                        <label>Số bàn đội 2:</label>
-                        <input type="number" id="soBanDoi2" min="0">
+                        <label>Trọng Tài Chính:</label>
+                        <select id="tt_chinh" required>
+                            <option value="">-- Chọn--</option>
+                        </select>
                     </div>
                     <div>
-                        <label>Ghi Chú:</label>
-                        <input type="text" id="ghiChu">
+                        <label>Trọng tài phụ:</label>
+                        <select id="tt_phu" required>
+                            <option value="">-- Chọn--</option>
+                        </select>
                     </div>
-
                     <div>
-                        <label>Đội thắng:</label>
-                        <select id="doiThang" required>
-                            <option value="">-- Chọn đội thắng --</option>
-                            <option id="optionDoi1" ></option>
-                            <option id="optionDoi2" ></option>
+                        <label>Trọng tài bàn:</label>
+                        <select id="tt_ban" required>
+                            <option value="">-- Chọn--</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Trọng tài VAR:</label>
+                        <select id="tt_var" required>
+                            <option value="">-- Chọn--</option>
                         </select>
                     </div>
 
-                    <button id="bt_luuKQ" type="button" class="btn btn-success">Lưu kết quả</button>
-                    <button id="bt_huyThayDoi" type="button" class="btn btn-danger btn-sm">Hủy thay đổi</button>
+                    <button id="bt_luu_tt" type="button" class="btn btn-success">Lưu kết quả</button>
+                    <button id="bt_huy_luu_tt" type="button" class="btn btn-danger btn-sm">Hủy thay đổi</button>
 
 
-                  
+
                 </div>
             </div>
         </div>

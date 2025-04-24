@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý nhân viên</title>
+    <title>Đăng Ký Giải Đâu</title>
     <style>
         label {
             display: block;
@@ -118,6 +118,7 @@
                                 <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
                             </tbody>
                         </table>
+
                         <!-- Modal hiển thị thông tin đăng ký -->
                         <div id="modalDangKy" class="modal" style="display: none;">
                             <div class="modal-content">
@@ -125,13 +126,43 @@
                                 <h5>XÁC NHẬN THÔNG TIN ĐĂNG KÝ</h5>
                                 <div id="thongTinGiaiDau"></div>
                                 <div style="text-align: right; margin-top: 15px;">
-                                    <button id="xacNhanDangKy" class="btn btn-success">Xác nhận</button>
+                                    <button id="dangKyGiai" class="btn btn-success">Đăng Ký Giải</button>
                                     <button id="huyDangKy" class="btn btn-secondary">Hủy</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Style cho modal -->
+                        <!-- Modal hiển thị danh sách cầu thủ -->
+                        <div id="modalDanhSachCauThu" class="modal" style="display: none;">
+                            <div class="modal-content">
+                                <span class="close" id="closeModal">&times;</span>
+                                <h5>Danh Sách Cầu Thủ</h5>
+                                <table id="playerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Cầu Thủ</th>
+                                            <th>Tên Cầu Thủ</th>
+                                            <th>Số Áo</th>
+                                            <th>Vị Tri</th>
+                                            <th>Giới Tính</th>
+                                            <th>Hình Ảnh</th>
+                                            <th>Chọn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="playerListBody">
+                                        <!-- Dữ liệu cầu thủ sẽ được chèn vào đây bằng JavaScript -->
+                                    </tbody>
+                                </table>
+                                <div style="text-align: right; margin-top: 15px;">
+                                    <button id="closeModalBtn" class="btn btn-secondary">Đóng</button>
+                                    <button id="xacNhanDangKy" class="btn btn-secondary">Gửi Yêu Cầu</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                         <style>
                             .modal {
                                 position: fixed;
@@ -144,16 +175,26 @@
                                 background-color: rgba(0, 0, 0, 0.4);
                                 display: flex;
                                 justify-content: center;
+                                /* Căn giữa theo chiều ngang */
                                 align-items: center;
+                                /* Căn giữa theo chiều dọc */
                             }
 
                             .modal-content {
                                 background-color: white;
                                 padding: 30px;
                                 border-radius: 8px;
-                                max-width: 500px;
+                                max-width: 800px;
+                                /* Điều chỉnh chiều rộng tối đa */
                                 width: 100%;
+                                /* Đảm bảo modal chiếm toàn bộ chiều rộng có thể */
                                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                            }
+
+                            .modal h5 {
+                                color: #ff5733;
+                                font-size: 24px;
+                                font-weight: bold;
                             }
 
                             .close {
@@ -162,6 +203,10 @@
                                 cursor: pointer;
                             }
                         </style>
+
+
+
+
 
                     </div>
                 </div>
