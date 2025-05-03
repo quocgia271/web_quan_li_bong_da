@@ -52,88 +52,62 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRỌNG TÀI</label>
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ CẦU THỦ</label>
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
+
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Trọng Tài</label>
-                            <input path="maTrongTai" type="text" class="form-control" id="maTrongTai" required readonly/>
-                        </div>
-        
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Họ Tên</label>
-                            <input path="hoTen" type="text" class="form-control" id="hoTen" required />
-                        </div>
-        
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Ngày Sinh</label>
-                            <input path="ngaySinh" type="date" class="form-control" id="ngaySinh" required />
-                        </div>
-        
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Giới Tính</label>
-                            <select path="maGioiTinh" class="form-control" id="maGioiTinh">
-                                <option value="nam">Nam</option>
-                                <option value="nữ">Nữ</option>
+                            <label class="font-weight-bold">Mã Trận Đấu</label>
+                            <select class="form-control" id="maTranDau" required>
+                                <option value="">-- Chọn trận đấu --</option>
                             </select>
                         </div>
-        
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Hình Ảnh Cũ</label>
-                            <input path="hinhAnh" type="text" class="form-control" id="hinhAnh" readonly/>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Mã Trọng Tài</label>
+                            <select class="form-control" id="maTrongTai" required>
+                                <option value="">-- Chọn trận đấu --</option>
+                            </select>
                         </div>
-                         -->
-                         <div class="col-md-3">
-                            <label class="font-weight-bold">Hình Ảnh</label>
-                            <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="hinhAnh" readonly />
-                            <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="hinhAnhFile" />
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Chức Vụ Trong Trận</label>
+                            <select class="form-control" id="maLoaiTrongTai" required>
+                                <option value="">-- Chọn chức vụ--</option>
+                            </select>
                         </div>
-                        
-                        
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Hình Ảnh</label>
-                            <input type="text" class="form-control" id="hinhAnh" placeholder="Nhấp để chọn ảnh" readonly/>
-                            <img id="previewImage" src="" alt="Xem trước ảnh" class="img-fluid mt-2" style="display: none;"/>
-                        </div> -->
-                        
-        
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
+                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
                                 <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                     Trang</button>
                             </div>
                         </div>
-                    </form>
+                        </form:form>
                 </div>
-        
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> DANH SÁCH TRỌNG TÀI
+                        <i class="fas fa-table me-1"></i> TRỌNG TÀI TRONG TRẬN ĐẤU
                     </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
+                                    <th style="text-align: center;">Mã Trận Đấu</th>
                                     <th style="text-align: center;">Mã Trọng Tài</th>
-                                    <th style="text-align: center;">Họ Tên</th>
-                                    <th style="text-align: center;">Ngày Sinh</th>
-                                    <th style="text-align: center;">Giới Tính</th>
-                                    <th style="text-align: center;">Hình Ảnh</th>
+
+                                    <th style="text-align: center;">Chức Vụ</th>
+
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th style="text-align: center;">Mã Trận Đấu</th>
                                     <th style="text-align: center;">Mã Trọng Tài</th>
-                                    <th style="text-align: center;">Họ Tên</th>
-                                    <th style="text-align: center;">Ngày Sinh</th>
-                                    <th style="text-align: center;">Giới Tính</th>
-                                    <th style="text-align: center;">Hình Ảnh</th>
+
+                                    <th style="text-align: center;">Chức Vụ</th>
+
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -146,8 +120,9 @@
                 </div>
             </div>
         </main>
-        
-        
+
+
+
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
@@ -167,7 +142,7 @@
             }
         }
     </script>
-    <script src="/backend/services/doi_tuong/quanly_admin/tran_dau/trongTai.js"></script>
+    <script src="/backend/services/doi_tuong/quanly_admin/trong_mot_giai_dau/trongTai_tranDau.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
 

@@ -81,8 +81,6 @@
                 <button id="bt_luuKQ" type="button" class="btn btn-success">Lưu kết quả</button>
                 <button id="bt_huyThayDoi" type="button" class="btn btn-danger btn-sm">Hủy thay đổi</button>
 
-
-
             </div>
         </div>
     </div>
@@ -193,6 +191,11 @@
                                     Trang</button>
                                 <p class="text-success">${message1}</p>
                                 <p class="text-danger">${message0}</p>
+                            </div>
+                        </div>
+                        <div class='parent col-md-12 mt-3'>
+                            <div class='child float-left-child'>
+                                <button id="button_xepLich">Xếp Lịch</button>
                             </div>
                         </div>
                     </form>
@@ -323,6 +326,167 @@
                 top: 5px;
                 font-size: 24px;
                 cursor: pointer;
+            }
+        </style>
+        <div id="popupOverlay" class="overlay hidden">
+            <div class="popup-content">
+                <h3>Danh sách Giải Đấu</h3>
+
+                <div class="card-header">
+                    <form class="row mb-3" id="inputForm_chon">
+                        <h3>sau khi có danh sách đội thì có thể lọc lại đội từ trên xuống để chọn đội</h3>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Vòng Đấu Trước_để tính điểm vòng này</label>
+                            <select class="form-control" id="maVongDau_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Chọn Hình Thức Tạo</label>
+                            <select path="chon_hinhThuc_tao_tran" class="form-control" id="chon_hinhThuc_tao_tran">
+                                <option value="Chờ duyệt">--chon---</option>
+                                
+                            </select>
+                        </div>
+                       
+                        <!-- <div class="col-md-4">
+                            <label class="font-weight-bold">Ngày giờ diễn ra</label>
+                            <select class="form-control" id="nnn_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Trạng Thái</label>
+                            <select path="trangThai" class="form-control" id="trangThai_chon">
+                                <option value="All">Tất Cả</option>
+                                <option value="Chờ duyệt">Chờ duyệt</option>
+                                <option value="Đã duyệt">Đã duyệt</option>
+                                <option value="Từ chối">Từ chối</option>
+                            </select>
+                        </div> -->
+                    </form>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <button id="button_chon_tat_ca" class="btn btn-success">Chọn Tất Cả</button>
+                    <button id="button_tao_tran" class="btn btn-success">Tạo Trận</button>
+                   
+                    <button id="closePopup" class="btn btn-secondary">Đóng</button>
+                </div>
+                <!-- Popup xác nhận -->
+                <div id="confirmModal" class="overlay hidden">
+                    <div class="popup-content text-center">
+                        <p>Bạn có chắc chắn muốn duyệt tất cả không?</p>
+                        <button id="confirmYes" class="btn btn-success m-2">Có</button>
+                        <button id="confirmNo" class="btn btn-danger m-2">Không</button>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <table id="dataTable_chon">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Chọn</th>
+                                <th style="text-align: center;">Hạng</th>
+                                <th style="text-align: center;">Mã Đội Bóng</th>
+                                <th style="text-align: center;">Số Trận Thắng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu bảng sẽ được thêm vào đây -->
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+        <style>
+            #popupOverlay {
+                position: fixed;
+                /* Đảm bảo phần tử này luôn nằm trên màn hình */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                /* Màu nền mờ cho overlay */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow-y: auto;
+                /* Cho phép cuộn dọc */
+                padding: 20px;
+                z-index: 1000;
+                /* Đảm bảo overlay hiển thị trên các phần tử khác */
+            }
+
+            .popup-content {
+                background-color: #fff;
+                /* Màu nền của popup */
+                padding: 20px;
+                border-radius: 8px;
+                max-height: 80vh;
+                /* Giới hạn chiều cao của popup, có thể cuộn nội dung */
+                overflow-y: auto;
+                /* Cho phép cuộn dọc bên trong popup */
+                width: 100%;
+                /* Đảm bảo chiếm hết chiều rộng của overlay */
+                box-sizing: border-box;
+            }
+
+            .card {
+                max-height: 60vh;
+                /* Giới hạn chiều cao của card để có thể cuộn nội dung bên trong */
+                overflow-y: auto;
+                /* Cho phép cuộn dọc */
+            }
+
+            /* Bảng ẩn mặc định */
+            /* Kiểm tra xem lớp hidden có áp dụng đúng hay không */
+            .hidden {
+                display: none !important;
+            }
+
+            /* Overlay để làm nền tối khi hiển thị bảng */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                /* Màu nền mờ */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                /* Đảm bảo bảng nằm trên tất cả các phần tử khác */
+            }
+
+            /* Nội dung bảng */
+            .popup-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 800px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Nút đóng */
+            #closePopup {
+                margin-top: 20px;
+            }
+
+            #confirmModal p {
+                font-size: 18px;
+                font-weight: bold;
             }
         </style>
 

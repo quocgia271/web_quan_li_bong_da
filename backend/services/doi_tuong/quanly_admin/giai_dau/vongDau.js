@@ -1,5 +1,14 @@
+const btnLuuThayDoi = document.getElementById("button_luu");
+const btnTaiLaiTrang = document.getElementById("button_taiLaiTrang");
+
+const maVongDau = document.getElementById("maVongDau");
+const tenVong = document.getElementById("tenVong");
+const moTa = document.getElementById("moTa");
+
 document.addEventListener("DOMContentLoaded", function () {
     viewTbody();
+    btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
+    btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 });
 
 async function viewTbody() {
@@ -43,13 +52,49 @@ function button_sua(data) {
     });
 }
 
+
+// Xử lý nút "Xóa"
 function button_xoa(data) {
     document.querySelectorAll(".delete-btn").forEach((btn, index) => {
-        btn.addEventListener("click", () => {
-            if (confirm(`Bạn có chắc chắn muốn xóa vòng đấu ${data[index].ten_vong}?`)) {
-                data.splice(index, 1);
+        btn.addEventListener("click", async () => {
+            if (confirm(`Bạn có chắc chắn muốn xóa bảng đấu "${data[index].ten_vong}"?`)) {
+                const formData = { ma_vong_dau: data[index].ma_vong_dau };
+                await hamChung.xoa(formData, "vong_dau");
                 viewTbody();
             }
         });
     });
+}
+
+
+// Thêm/Sửa bảng đấu
+async function handleLuuThayDoi(event) {
+    event.preventDefault(); // Ngăn chặn reload trang
+    let formData = {};
+    if (maVongDau.value === "") {
+        formData = {
+            ma_vong_dau: await hamChung.taoID_theoBang("vong_dau"),
+            ten_vong: tenVong.value,
+            mo_ta: moTa.value
+        };
+        await hamChung.them(formData, "vong_dau");
+        alert("Thêm thành công!");
+    } else {
+        formData = {
+            ma_vong_dau: maVongDau.value,
+            ten_vong: tenVong.value,
+            mo_ta: moTa.value
+        };
+        await hamChung.sua(formData, "vong_dau");
+        alert("Sửa thành công!");
+    }
+    console.log(formData);
+
+    viewTbody();
+}
+
+// Xử lý tải lại trang
+function handleTaiLaiTrang(event) {
+    event.preventDefault();
+    location.reload();
 }

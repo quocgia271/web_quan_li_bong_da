@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
 import itertools
 import random
+from flask_cors import CORS  # Import flask_cors
 
 app = Flask(__name__)
+
+# Cho phép CORS cho tất cả các nguồn (origins)
+CORS(app)
 
 # # Chia bảng 
 # ok ok ok ok ok 
@@ -22,6 +26,24 @@ app = Flask(__name__)
 #   "teams": ["Đội A", "Đội B", "Đội C", "Đội D", "Đội E", "Đội F", "Đội G", "Đội H", "Đội T"],
 #   "randomize": false
 # }
+
+hinh_thuc_tao_doi = {
+    "chia-bang": {
+        "ten":"chia bảng",
+        "url": "/api/chia-bang",
+        "mo_ta": "Chia các đội vào các bảng"
+    },
+    "vong-tron": {
+         "ten":"vòng tròn",
+        "url": "/api/vong-tron",
+        "mo_ta": "Xếp lịch thi đấu vòng tròn giữa các đội"
+    },
+    "loai-truc-tiep": {
+         "ten":"loại trực tiếp",
+        "url": "/api/loai-truc-tiep",
+        "mo_ta": "Thi đấu loại trực tiếp, nếu số đội lẻ sẽ có đội được miễn"
+    }
+}
 
 
 def chia_thanh_bang(danh_sach_doi, so_bang, ngau_nhien=False):
@@ -87,6 +109,12 @@ def xep_lich_loai_truc_tiep(danh_sach_doi, randomize=True):
 
 
 # ------------------- API -------------------
+@app.route("/api", methods=["GET"])
+def api_hinh_thuc_tao_doi():
+    return jsonify(hinh_thuc_tao_doi)
+
+
+
 
 @app.route("/api/chia-bang", methods=["POST"])
 def api_chia_bang():

@@ -1,30 +1,39 @@
 const btnLuuThayDoi = document.getElementById("button_luu");
 const btnTaiLaiTrang = document.getElementById("button_taiLaiTrang");
 
+
 const maDoiBong = document.getElementById("maDoiBong");
+const maGiaiDau = document.getElementById("maGiaiDau");
 const tenDoiBong = document.getElementById("tenDoiBong");
-const quocGia = document.getElementById("quocGia");
-const maGioiTinh = document.getElementById("maGioiTinh");
+
 const hinhAnh = document.getElementById("logo");
 const inputFile = document.getElementById("logoFile");
-const form = document.getElementById("inputForm");
-const maQlDoiBong = document.getElementById("maQlDoiBong");
 
-document.addEventListener("DOMContentLoaded", async function () {
-    loadDanhSachNguoiDung_quanLyDoiBong();
-    await viewTbody();
-    // console.log(loadDanhSachNguoiDung_quanLyDoiBong());
+const form = document.getElementById("inputForm");
+const quocGia = document.getElementById("quocGia");
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    loadDanhSachDoiBong();
+    loadDanhSachGiaiDau();
+    viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
+  
 });
 
-// Hiển thị danh sách đội bóng
+// Hiển thị danh sách cầu thủ trong giải đấu
 async function viewTbody() {
-    const data = await hamChung.layDanhSach("doi_bong");
+    const data = await hamChung.layDanhSach("doi_bong_giai_dau");
     console.log(data);
     const tableBody = document.getElementById("dataTable");
     tableBody.innerHTML = "";
-    // Dùng Promise.all để chờ tất cả hình ảnh tải xong
+
     const rows = await Promise.all(data.map(async item => {
         // const hinh_anh = await hamChung.getImage(item.hinh_anh);
         // console.log(item.hinh_anh);
@@ -36,44 +45,34 @@ async function viewTbody() {
             hinh_anh = "/frontend/public/images/cat-2.png";
         } else {
             hinh_anh = await hamChung.getImage(item.logo);
-            
+
         }
         row.innerHTML = `
+            <td style="text-align: center;">${item.ma_giai_dau}</td>
             <td style="text-align: center;">${item.ma_doi_bong}</td>
             <td style="text-align: center;">${item.ten_doi_bong}</td>
             <td style="text-align: center;">${item.quoc_gia}</td>
-            <td style="text-align: center;">${item.gioi_tinh}</td>
             <td style="text-align: center;"><img src="${hinh_anh}" alt="Logo" width="50"></td>
-            <td style="text-align: center;">${item.ma_ql_doi_bong}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
-        return row;
+        tableBody.appendChild(row);
     }));
-
-    // Thêm tất cả hàng vào bảng cùng lúc
-    rows.forEach(row => tableBody.appendChild(row));
 
     button_sua(data);
     button_xoa(data);
 }
 
-// Thêm/Sửa đội bóng
+// Thêm/Sửa cầu thủ trong giải đấu
 async function handleLuuThayDoi(event) {
     event.preventDefault();
 
-    // const inputFile = document.getElementById('logoFile'); // Thẻ input file
-    // const urlFoderImage = GlobalStore.getLinkFoderImage();
-
-    // const form = document.getElementById("inputForm");
+    const form = document.getElementById("inputForm");
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
-
-    let formData = {};
     let id_Hinh_anh_thay = "";
-    //  không chọn hình ảnh mới
     if (inputFile.value === "")
         id_Hinh_anh_thay = hinhAnh.value;
     else {
@@ -82,34 +81,28 @@ async function handleLuuThayDoi(event) {
     id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
     console.log(id_Hinh_anh_thay);
 
-    if (maDoiBong.value === "") {
-        formData = {
-            ma_doi_bong: await hamChung.taoID_theoBang("doi_bong"),
-            ten_doi_bong: tenDoiBong.value,
-            quoc_gia: quocGia.value,
-            gioi_tinh: maGioiTinh.value,
-            logo: id_Hinh_anh_thay,
-            ma_ql_doi_bong: maQlDoiBong.value
-        };
-        await hamChung.them(formData, "doi_bong");
-        alert("Thêm thành công!");
-    } else {
-        formData = {
-            ma_doi_bong: maDoiBong.value,
-            ten_doi_bong: tenDoiBong.value,
-            quoc_gia: quocGia.value,
-            gioi_tinh: maGioiTinh.value,
-            logo: id_Hinh_anh_thay,
-            ma_ql_doi_bong: maQlDoiBong.value
-        };
-        await hamChung.sua(formData, "doi_bong");
+    let formData = {
+        ma_doi_bong: maDoiBong.value,
+        ma_giai_dau: maGiaiDau.value,
+        ten_doi_bong: tenDoiBong.value,
+        quoc_gia: quocGia.value,
+        logo: id_Hinh_anh_thay
+    };
+    // th đang chỉnh sửa
+    if (maDoiBong.disabled && maGiaiDau.disabled) {
+        await hamChung.sua(formData, "doi_bong_giai_dau");
         alert("Sửa thành công!");
+    } else
+    // th đang thêm mới
+    {
+        await hamChung.them(formData, "doi_bong_giai_dau");
+        alert("Thêm thành công!");
     }
-    console.log(formData);
+    // console.log(formData);
+    // viewTbody();
     if (inputFile.value != "") {
         await hamChung.uploadImage(inputFile.files[0]);
     }
- //   viewTbody();
 }
 
 // Xử lý tải lại trang
@@ -123,20 +116,16 @@ function button_sua(data) {
     document.querySelectorAll(".edit-btn").forEach((btn, index) => {
         btn.addEventListener("click", () => {
             const item = data[index];
+
+            maGiaiDau.value = item.ma_giai_dau;
             maDoiBong.value = item.ma_doi_bong;
             tenDoiBong.value = item.ten_doi_bong;
             quocGia.value = item.quoc_gia;
-            maGioiTinh.value = item.gioi_tinh;
             logo.value = item.logo;
-            maQlDoiBong.value = item.ma_ql_doi_bong;
+            // Ngăn không cho thay đổi
 
-
-            
-            // Scroll lên đầu trang
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            maGiaiDau.setAttribute("disabled", true);
+            maDoiBong.setAttribute("disabled", true);
         });
     });
 }
@@ -145,9 +134,12 @@ function button_sua(data) {
 function button_xoa(data) {
     document.querySelectorAll(".delete-btn").forEach((btn, index) => {
         btn.addEventListener("click", async () => {
-            if (confirm(`Bạn có chắc chắn muốn xóa đội bóng ${data[index].ten_doi_bong}?`)) {
-                const formData = { ma_doi_bong: data[index].ma_doi_bong };
-                await hamChung.xoa(formData, "doi_bong");
+            if (confirm(`Bạn có chắc chắn muốn xóa doi bong ${data[index].ma_doi_bong} khỏi giải đấu?`)) {
+                const formData = {
+                    ma_doi_bong: data[index].ma_doi_bong,
+                    ma_giai_dau: data[index].ma_giai_dau
+                };
+                await hamChung.xoa(formData, "doi_bong_giai_dau");
                 viewTbody();
             }
         });
@@ -155,24 +147,26 @@ function button_xoa(data) {
 }
 
 
-async function loadDanhSachNguoiDung_quanLyDoiBong() {
-    const selectElement = document.getElementById("maQlDoiBong");
-    selectElement.innerHTML = '<option value="">-- Chưa Nhập --</option>'; // Reset danh sách
 
-    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
-    const dataNguoiDung = await hamChung.layDanhSach("nguoi_dung");
-
-    // Lọc danh sách tài khoản có ma_vai_tro === 3
-    const taiKhoanQuanLyDoiBong = dataTaiKhoan.filter(tk => tk.ma_vai_tro === 2);
-
-    // Lọc danh sách người dùng có tài khoản trong nhóm trên
-    const nguoiDungQuanLyDoiBong = dataNguoiDung.filter(nd =>
-        taiKhoanQuanLyDoiBong.some(tk => tk.tai_khoan === nd.tai_khoan)
-    );
-    nguoiDungQuanLyDoiBong.forEach(item => {
+async function loadDanhSachDoiBong() {
+    const selectElement = document.getElementById("maDoiBong");
+    selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>'; // Reset danh sách
+    const data = await hamChung.layDanhSach("doi_bong");
+    data.forEach(item => {
         const option = document.createElement("option");
-        option.value = item.ma_nguoi_dung;
-        option.textContent = `${item.ma_nguoi_dung} - ${item.ho_ten}`;
+        option.value = item.ma_doi_bong;
+        option.textContent = `${item.ma_doi_bong} - ${item.ten_doi_bong}`;
+        selectElement.appendChild(option);
+    });
+}
+async function loadDanhSachGiaiDau() {
+    const selectElement = document.getElementById("maGiaiDau");
+    selectElement.innerHTML = '<option value="">-- Chọn Mã Giải Đấu --</option>'; // Reset danh sách
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ma_giai_dau} - ${item.ten_giai_dau}`;
         selectElement.appendChild(option);
     });
 }

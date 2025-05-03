@@ -10,7 +10,7 @@ const lyDoTuChoi = document.getElementById("lyDoTuChoi");
 
 
 // Lấy các phần tử
-const btnXemTD = document.getElementById("button_xemTD_sap_dien_ra");
+
 const popupOverlay = document.getElementById("popupOverlay");
 const closePopup = document.getElementById("closePopup");
 
@@ -117,7 +117,7 @@ function button_xoa(data) {
 function handle_view_GiaiDau(event) {
     console.log("tien");
     event.preventDefault();
-    const trangThaiDuyet = document.getElementById("trangThai_chon");
+
     // Hiển thị bảng popupOverlay
     document.getElementById("popupOverlay").classList.remove("hidden");
     // Sự kiện khi nhấn nút "Đóng" trong bảng

@@ -52,59 +52,54 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ CẦU THỦ</label>
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRỌNG TÀI</label>
                 </div>
-                <!-- sửa kiểu div thành kiểu form thì sao  -->
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Cầu Thủ</label>
-                            <input type="text" class="form-control" id="maCauThu" required readonly />
+                            <label class="font-weight-bold">Mã Trọng Tài</label>
+                            <input path="maTrongTai" type="text" class="form-control" id="maTrongTai" required readonly/>
                         </div>
-
+        
                         <div class="col-md-3">
                             <label class="font-weight-bold">Họ Tên</label>
-                            <input type="text" class="form-control" id="hoTen" required />
+                            <input path="hoTen" type="text" class="form-control" id="hoTen" required />
                         </div>
-
+        
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Sinh</label>
-                            <input type="date" class="form-control" id="ngaySinh" required />
+                            <input path="ngaySinh" type="date" class="form-control" id="ngaySinh" required />
                         </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Số Áo</label>
-                            <input type="number" class="form-control" id="soAo" min="0" required />
-                        </div>
-
+        
                         <div class="col-md-3">
                             <label class="font-weight-bold">Giới Tính</label>
-                            <select class="form-control" id="maGioiTinh" required>
+                            <select path="maGioiTinh" class="form-control" id="maGioiTinh">
                                 <option value="nam">Nam</option>
                                 <option value="nữ">Nữ</option>
                             </select>
                         </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Vị Trí</label>
-                            <select class="form-control" id="maViTri" required>
-                                <option value="">-- Chọn Vị Trí --</option>
-                            </select>
+        
+                        <!-- <div class="col-md-3">
+                            <label class="font-weight-bold">Hình Ảnh Cũ</label>
+                            <input path="hinhAnh" type="text" class="form-control" id="hinhAnh" readonly/>
                         </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Đội Bóng</label>
-                            <select class="form-control" id="maDoiBong" required>
-                                <option value="">-- Chọn Đội Bóng --</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
+                         -->
+                         <div class="col-md-3">
                             <label class="font-weight-bold">Hình Ảnh</label>
                             <!-- Input hiển thị tên file hoặc URL ảnh -->
                             <input type="text" class="form-control" id="hinhAnh" readonly />
                             <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="hinhAnhFile" accept="image/*" />
+                            <input type="file" class="form-control" id="hinhAnhFile" />
                         </div>
+                        
+                        
+                        <!-- <div class="col-md-3">
+                            <label class="font-weight-bold">Hình Ảnh</label>
+                            <input type="text" class="form-control" id="hinhAnh" placeholder="Nhấp để chọn ảnh" readonly/>
+                            <img id="previewImage" src="" alt="Xem trước ảnh" class="img-fluid mt-2" style="display: none;"/>
+                        </div> -->
+                        
+        
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
                                 <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
@@ -114,37 +109,45 @@
                         </div>
                     </form>
                 </div>
-
+        
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> DANH SÁCH CẦU THỦ
+                        <i class="fas fa-table me-1"></i> DANH SÁCH TRỌNG TÀI
                     </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <th>Mã Cầu Thủ</th>
-                                    <th>Họ Tên</th>
-                                    <th>Ngày Sinh</th>
-                                    <th>Số Áo</th>
-                                    <th>Giới Tính</th>
-                                    <th>Vị Trí</th>
-                                    <th>Đội Bóng</th>
-                                    <th>Hình Ảnh</th>
-                                    <th>Sửa</th>
-                                    <th>Xóa</th>
+                                    <th style="text-align: center;">Mã Trọng Tài</th>
+                                    <th style="text-align: center;">Họ Tên</th>
+                                    <th style="text-align: center;">Ngày Sinh</th>
+                                    <th style="text-align: center;">Giới Tính</th>
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th style="text-align: center;">Mã Trọng Tài</th>
+                                    <th style="text-align: center;">Họ Tên</th>
+                                    <th style="text-align: center;">Ngày Sinh</th>
+                                    <th style="text-align: center;">Giới Tính</th>
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Xóa</th>
+                                </tr>
+                            </tfoot>
                             <tbody id="dataTable">
-                                <!-- Dữ liệu cầu thủ sẽ được chèn vào đây bằng JavaScript -->
+                                <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
-
-
+        
+        
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
@@ -164,7 +167,7 @@
             }
         }
     </script>
-    <script src="/backend/services/doi_tuong/quanly_admin/doi_bong/cau_thu.js"></script>
+    <script src="/backend/services/doi_tuong/quanly_admin/trong_tai/trongTai.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
 

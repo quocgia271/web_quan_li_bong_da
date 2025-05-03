@@ -82,18 +82,50 @@
                                 <option value="">-- Chọn giải đấu --</option>
                             </select>
                         </div>
+
+
+
+
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Họ Tên</label>
+                            <input type="text" class="form-control" id="hoTen" required />
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Hình Ảnh</label>
+                            <!-- Input hiển thị tên file hoặc URL ảnh -->
+                            <input type="text" class="form-control" id="hinhAnh" readonly />
+                            <!-- Input cho phép người dùng chọn file ảnh -->
+                            <input type="file" class="form-control" id="hinhAnhFile" accept="image/*" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Số Áo</label>
+                            <input type="number" class="form-control" id="soAo" min="0" required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Vị Trí</label>
+                            <select class="form-control" id="maViTri" required>
+                                <option value="">-- Chọn Vị Trí --</option>
+                            </select>
+                        </div>
+
                         <!-- <div class="col-md-4">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
                             <input path="maGiaiDau" type="text" class="form-control" id="maGiaiDau" required />
                         </div> -->
-                       
+
                         <div class='col-md-12 mt-3'>
                             <button id="button_luu" class="btn btn-success">Lưu</button>
-                            <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại Trang</button>
+                            <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
+                                Trang</button>
                             <p class="text-success">${message1}</p>
                             <p class="text-danger">${message0}</p>
                         </div>
-                    </form:form>
+                        </form:form>
                 </div>
                 <div class="card mb-4">
                     <div class="card-header">
@@ -106,6 +138,10 @@
                                     <th style="text-align: center;">Mã Cầu Thủ</th>
                                     <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Mã Giải Đấu</th>
+                                    <th style="text-align: center;">Họ Và Tên</th>
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Số Áo</th>
+                                    <th style="text-align: center;">Vị Trí</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -115,6 +151,10 @@
                                     <th style="text-align: center;">Mã Cầu Thủ</th>
                                     <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Mã Giải Đấu</th>
+                                    <th style="text-align: center;">Họ Và Tên</th>
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Số Áo</th>
+                                    <th style="text-align: center;">Vị Trí</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -127,9 +167,9 @@
                 </div>
             </div>
         </main>
-        
-        
-        
+
+
+
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
@@ -149,7 +189,7 @@
             }
         }
     </script>
-    <script src="/backend/services/doi_tuong/quanly_admin/doi_bong/cauThu_giaiDau.js"></script>
+    <script src="/backend/services/doi_tuong/quanly_admin/trong_mot_giai_dau/cauThu_giaiDau.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
 

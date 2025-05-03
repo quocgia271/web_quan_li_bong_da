@@ -35,7 +35,7 @@
     <div id="chen"></div>
     <script>
         // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
-        fetch('/frontend/public/src/common/quanly/test_header.html')
+        fetch('/frontend/public/src/common/quanly/header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('chen').innerHTML = data;
@@ -182,7 +182,6 @@
                 display: none !important;
             }
 
-            /* Overlay để làm nền tối khi hiển thị bảng */
             .overlay {
                 position: fixed;
                 top: 0;
@@ -190,23 +189,28 @@
                 width: 100%;
                 height: 100%;
                 background: rgba(0, 0, 0, 0.5);
-                /* Màu nền mờ */
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                align-items: flex-start;
+                /* Căn popup lên trên */
                 z-index: 1000;
-                /* Đảm bảo bảng nằm trên tất cả các phần tử khác */
+                overflow-y: auto;
+                /* Cho phép cuộn nếu cần */
             }
 
-            /* Nội dung bảng */
             .popup-content {
                 background-color: white;
                 padding: 20px;
                 border-radius: 10px;
                 width: 80%;
                 max-width: 800px;
+                margin-top: 100px;
+                /* Cách mép trên 100px */
+                margin-bottom: 40px;
+                /* Lề dưới để tránh đụng đáy */
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             }
+
 
             /* Nút đóng */
             #closePopup {

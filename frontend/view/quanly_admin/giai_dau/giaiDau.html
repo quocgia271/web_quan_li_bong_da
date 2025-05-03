@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <c:set var="root" value="${pageContext.servletContext.contextPath}" />
@@ -55,12 +53,13 @@
             <div class="container-fluid px-4">
                 <div class="card-header">
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ GIẢI ĐẤU</label>
+
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-2">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
-                            <input type="text" class="form-control" id="maGiaiDau" required readonly/>
+                            <input type="text" class="form-control" id="maGiaiDau" required readonly />
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Tên Giải Đấu</label>
@@ -85,20 +84,23 @@
                             <label class="font-weight-bold">Ngày Kết Thúc</label>
                             <input type="date" class="form-control" id="ngayKetThuc" required />
                         </div>
-                       
+
                         <div class="col-md-12 mt-3">
                             <label class="font-weight-bold">Mô Tả</label>
                             <textarea class="form-control" id="moTa"></textarea>
                         </div>
                         <div class='col-md-12 mt-3'>
-                            <button id="button_luu" class="btn btn-success" >Lưu</button>
-                            <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại Trang</button>
+                            <button id="button_luu" class="btn btn-success">Lưu</button>
+                            <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
+                                Trang</button>
                         </div>
                     </form>
                 </div>
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH GIẢI ĐẤU
+                        <button id="button_locDanhSach" class="btn btn-primary float-end">Lọc Danh Sách
+                            ra</button>
                     </div>
                     <div class="card-body">
                         <table id="table">
@@ -123,9 +125,102 @@
                 </div>
             </div>
         </main>
+
+
+
+        <!-- Bảng ẩn sẽ hiển thị khi người dùng nhấn nút -->
+        <div id="popupOverlay" class="overlay hidden">
+            <div class="popup-content">
+                <h3>Danh sách Giải Đấu</h3>
+
+                <div class="card-header">
+                    <form class="row mb-3" id="inputForm_chon">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Đội Bóng</label>
+                            <select class="form-control" id="maDoiBong_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+               
+                <!-- Popup xác nhận -->
         
-        
-        
+                <div class="card mb-4">
+                    <table id="dataTable_chon">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Mã Giải Đấu</th>
+                                <th style="text-align: center;">Tên Giải Đấu</th>
+                                <th style="text-align: center;">Tên Tổ Chức</th>
+                                <th style="text-align: center;">Ngày Bắt Đầu</th>
+                                <th style="text-align: center;">Ngày Kết Thúc</th>
+                                <th style="text-align: center;">Giới Tính</th>
+                                <th style="text-align: center;">Mô Tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu bảng sẽ được thêm vào đây -->
+                        </tbody>
+                    </table>
+                </div>
+                <button id="closePopup" class="btn btn-secondary">Đóng</button>
+            </div>
+        </div>
+        <style>
+            /* Bảng ẩn mặc định */
+            /* Kiểm tra xem lớp hidden có áp dụng đúng hay không */
+            .hidden {
+                display: none !important;
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                /* Căn popup lên trên */
+                z-index: 1000;
+                overflow-y: auto;
+                /* Cho phép cuộn nếu cần */
+            }
+
+            .popup-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 800px;
+                margin-top: 100px;
+                /* Cách mép trên 100px */
+                margin-bottom: 40px;
+                /* Lề dưới để tránh đụng đáy */
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+
+            /* Nút đóng */
+            #closePopup {
+                margin-top: 20px;
+            }
+
+            #confirmModal p {
+                font-size: 18px;
+                font-weight: bold;
+            }
+        </style>
 
 
 
@@ -148,7 +243,7 @@
             }
         }
     </script>
-    
+
     <script src="/backend/services/doi_tuong/quanly_admin/giai_dau/giaiDau.js"></script>
     <script type="module" src="/backend/services/global/global.js"></script>
     <script type="module" src="/backend/services/global/hamChung.js"></script>
