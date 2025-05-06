@@ -334,27 +334,33 @@
 
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm_chon">
-                        <h3>sau khi có danh sách đội thì có thể lọc lại đội từ trên xuống để chọn đội</h3>
+                       
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
                             <select class="form-control" id="maGiaiDau_chon" required>
                                 <option value="All">Tất Cả</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Vòng Đấu Trước_để tính điểm vòng này</label>
-                            <select class="form-control" id="maVongDau_chon" required>
-                                <option value="All">Tất Cả</option>
-                            </select>
-                        </div>
+                       
                         <div class="col-md-4">
                             <label class="font-weight-bold">Chọn Hình Thức Tạo</label>
                             <select path="chon_hinhThuc_tao_tran" class="form-control" id="chon_hinhThuc_tao_tran">
                                 <option value="Chờ duyệt">--chon---</option>
-                                
+
                             </select>
                         </div>
-                       
+
+                        <div class="col-md-4" id="vongDauTruocContainer">
+                            <label class="font-weight-bold">Vòng Đấu Đã Đá</label>
+                            <select class="form-control" id="maVongDau_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4" id="danhSachBangContainer" style="display: none;">
+                            <label class="font-weight-bold">Danh Sách Bảng</label>
+                            <ul id="danhSachBang"></ul> <!-- Nơi hiển thị danh sách bảng -->
+                        </div>
+
                         <!-- <div class="col-md-4">
                             <label class="font-weight-bold">Ngày giờ diễn ra</label>
                             <select class="form-control" id="nnn_chon" required>
@@ -375,7 +381,7 @@
                 <div class="col-md-12 mt-3">
                     <button id="button_chon_tat_ca" class="btn btn-success">Chọn Tất Cả</button>
                     <button id="button_tao_tran" class="btn btn-success">Tạo Trận</button>
-                   
+
                     <button id="closePopup" class="btn btn-secondary">Đóng</button>
                 </div>
                 <!-- Popup xác nhận -->
@@ -392,9 +398,10 @@
                         <thead>
                             <tr>
                                 <th style="text-align: center;">Chọn</th>
-                                <th style="text-align: center;">Hạng</th>
-                                <th style="text-align: center;">Mã Đội Bóng</th>
-                                <th style="text-align: center;">Số Trận Thắng</th>
+                                <th style="text-align: center;">Hạt Giống</th>
+                                <th style="text-align: center;">Đội Bóng</th>
+                                <th style="text-align: center;">Logo</th>
+                                <th style="text-align: center;">Quốc Gia</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -406,25 +413,98 @@
 
             </div>
         </div>
+
+
+        <!-- Bảng hiển thị danh sách các trận đấu đã tạo -->
+        <!-- Bảng hiển thị danh sách các trận đấu đã tạo -->
+        <div id="bangTaoTran" class="card mt-4 hidden">
+            <div class="card-header" id="danhSachDoiBong_theoBang">
+                <!-- Thêm nút đóng -->
+
+            </div>
+
+            <div class="card-header">
+                <h4>Danh sách các Trận Đấu được tạo</h4>
+            </div>
+            <!-- <div>
+                <input type="date" id="chon_ngayBatDau" class="btn btn-success">Ngày Bắt Đầu</button>
+            </div>
+            <div>
+                <input type="time" id="chon_gioBatDau" class="btn btn-success">Ngày Bắt Đầu</button>
+            </div> -->
+            <form class="row mb-3" id="inputForm_chon_ngay_gio">
+                <div class="col-md-3">
+                    <label class="font-weight-bold">Ngày Bắt Đâu</label>
+                    <input type="date" class="form-control" id="chon_ngayBatDau" required />
+                </div>
+                <div class="col-md-3">
+                    <label class="font-weight-bold">Giờ Giờ Bắt Đầu</label>
+                    <input type="time" class="form-control" id="chon_gioBatDau" required />
+                </div>
+                <div class="col-md-4">
+                    <button id="bt_luuDanhSachTranDau_tuDong" type="button" class="btn btn-success">Lưu kết quả</button>
+                </div>
+            </form>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Bảng</th>
+                            <th>STT</th>
+                            <th>Đội 1</th>
+                            <th>Đội 2</th>
+                            <th>Ngày</th>
+                            <th>Giờ</th>
+                            <th>Sân</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyBangTaoTran">
+                        <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button id="btnCloseBangTaoTran" class="btn btn-danger btn-sm float-right">Đóng</button>
+
+        </div>
+
+
         <style>
+            #bangTaoTran {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: block;
+                /* Đảm bảo bảng hiển thị khi cần */
+                z-index: 1100;
+                /* Đảm bảo bảng này luôn ở trên cùng */
+            }
+            /* CSS để làm mờ và ngăn tương tác */
+.disabled-overlay {
+    filter: blur(2px);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+
             #popupOverlay {
                 position: fixed;
-                /* Đảm bảo phần tử này luôn nằm trên màn hình */
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 background-color: rgba(0, 0, 0, 0.5);
-                /* Màu nền mờ cho overlay */
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 overflow-y: auto;
-                /* Cho phép cuộn dọc */
                 padding: 20px;
                 z-index: 1000;
-                /* Đảm bảo overlay hiển thị trên các phần tử khác */
+                /* Đảm bảo overlay không che mất bảng thứ 2 */
             }
+
 
             .popup-content {
                 background-color: #fff;
@@ -504,6 +584,25 @@
             </div>
         </footer>
     </div>
+    <script>
+        const dateInput = document.getElementById("chon_ngayBatDau");
+        const timeInput = document.getElementById("chon_gioBatDau");
+
+        const now = new Date();
+
+        // Lấy ngày mai
+        const tomorrow = new Date(now);
+        tomorrow.setDate(now.getDate() + 1);
+
+        // Format ngày dạng YYYY-MM-DD
+        const formattedDate = tomorrow.toISOString().split('T')[0];
+        dateInput.value = formattedDate;
+
+        // Format giờ dạng HH:MM
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        timeInput.value = `${hours}:${minutes}`;
+    </script>
     <script>
         function confirmDelete() {
             if (window.confirm("Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?")) {

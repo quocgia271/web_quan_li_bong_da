@@ -1,12 +1,13 @@
 const congAPI = 4002;
-const IPv4_Address =  "192.168.1.29";
+const congAPI_image = 5000;
+const congAPI_taoTranDau = 5001;
+const IPv4_Address =  "192.168.1.37";
 // const linkCongAPI = "http://localhost:" + congAPI + "/api/";
 // ex : http://192.168.1.136:4002/api
 // ex : http://localhost:4002/api
 
 // const linkCongAPI = IPv4_Address +":"+ congAPI + "/api/";
 // C:\Users\vanti\Desktop\5_2\6A _ NMCN Phần Mềm_ Châu Văn Vân\DO_AN\quan_ly_tran_dau\service
-const linkCongAPI = "http://"+IPv4_Address +":"+ congAPI + "/api/";
 
 const GlobalStore = {
     // Đặt giá trị vào localStorage
@@ -25,11 +26,17 @@ const GlobalStore = {
     },
 
     getLinkCongAPI() {
-        return linkCongAPI;
+        return "http://"+IPv4_Address +":"+ congAPI + "/api/";
     },
     getLinkCongApi_image(){
-        return "http://"+IPv4_Address +":"+ 5000 + "/api/image";
-    }
+        // http://
+        return "http://"+IPv4_Address +":"+ congAPI_image + "/api/image";
+    },
+    getLinkCongApi_taoTranDau(){
+        return "http://"+IPv4_Address +":"+ congAPI_taoTranDau + "/api_taoTranDau";
+    },
+// tôi muốn lấy api của phần tạo trận đấu ấy
+
 
 
 };

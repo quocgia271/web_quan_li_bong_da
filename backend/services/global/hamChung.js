@@ -6,6 +6,9 @@ const hamChung = {
     async layThongTinTheo_ID(table, id) {
         return await layThongTinTheo_ID(table, id);
     },
+    async layThongTinTheo_2_ID(table, id, id2) {
+        return await layThongTinTheo_2_ID(table, id, id2);
+    },
 
     taoID_theoBang(table) {
         return taoID_theoBang(table);
@@ -37,6 +40,21 @@ const hamChung = {
     //     return deleteImage(public_id);
     // },
 
+    async taoTranDau_getHinhThucTaoDoi() {
+        return await getHinhThucTaoDoi();
+    },
+    async taoTranDau_chiaBang(teams, danh_sach_doi_hat_dong, bangs, random = false) {
+        return await taoTranDau_chiaBang(teams, danh_sach_doi_hat_dong, bangs, random);
+    },
+    async taoTranDau_vongTron(teams) {
+        return await taoTranDau_vongTron(teams);
+    },
+    async taoTranDau_loaiTrucTiep(teams, randomize = false) {
+        return await taoTranDau_loaiTrucTiep(teams, randomize);
+    },
+
+
+
 
 
 };
@@ -56,6 +74,15 @@ async function layDanhSach(table) {
 async function layThongTinTheo_ID(table, id) {
     try {
         const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id);
+        return await response.json();
+    } catch (error) {
+        console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
+        return null;
+    }
+}
+async function layThongTinTheo_2_ID(table, id, id2) {
+    try {
+        const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id + "/" + id2);
         return await response.json();
     } catch (error) {
         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
@@ -199,16 +226,16 @@ function sua(data, table_name) {
         "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
         "doi_bong_giai_dau": ["ma_doi_bong", "ma_giai_dau"], //// newwwww
         "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
-    
+
         "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
         "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
         "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
         "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
         "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"], // Khóa chính là (ma_doi_bong, ma_bang_dau)
-        "dang_ky_tham_gia_giai": ["ma_giai_dau","ma_doi_bong"],         // Thêm bảng vòng đấu
-        "loai_trong_tai":["ma_loai_trong_tai"],
-        "trong_tai_tran_dau":["ma_tran_dau","ma_trong_tai"],
-        "san_van_dong":["ma_san"],
+        "dang_ky_tham_gia_giai": ["ma_giai_dau", "ma_doi_bong"],         // Thêm bảng vòng đấu
+        "loai_trong_tai": ["ma_loai_trong_tai"],
+        "trong_tai_tran_dau": ["ma_tran_dau", "ma_trong_tai"],
+        "san_van_dong": ["ma_san"],
     }[table_name];
 
     if (!data) {
@@ -272,16 +299,16 @@ async function xoa(keys, table_name) {
         "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"], // Khóa chính là (ma_cau_thu, ma_giai_dau)
         "doi_bong_giai_dau": ["ma_doi_bong", "ma_giai_dau"], //// newwwww
         "trong_tai": ["ma_trong_tai"],        // Bảng trọng tài, khóa chính là mã trọng tài
-    
+
         "vong_dau": ["ma_vong_dau"],         // Thêm bảng vòng đấu
         "tran_dau": ["ma_tran_dau"],          // Khóa chính là mã trận đấu
         "ket_qua_tran_dau": ["ma_tran_dau"],  // Sử dụng ma_tran_dau làm khóa chính thay vì tạo ma_ket_qua riêng
         "bang_dau": ["ma_bang_dau"],          // Thêm bảng bảng đấu
         "bang_xep_hang_vong_loai": ["ma_doi_bong", "ma_bang_dau"], // Khóa chính là (ma_doi_bong, ma_bang_dau)
-        "dang_ky_tham_gia_giai": ["ma_giai_dau","ma_doi_bong"],         // Thêm bảng vòng đấu
-        "loai_trong_tai":["ma_loai_trong_tai"],
-        "trong_tai_tran_dau":["ma_tran_dau","ma_trong_tai"],
-        "san_van_dong":["ma_san"],
+        "dang_ky_tham_gia_giai": ["ma_giai_dau", "ma_doi_bong"],         // Thêm bảng vòng đấu
+        "loai_trong_tai": ["ma_loai_trong_tai"],
+        "trong_tai_tran_dau": ["ma_tran_dau", "ma_trong_tai"],
+        "san_van_dong": ["ma_san"],
     };
 
     // Kiểm tra xem bảng có hợp lệ không
@@ -416,6 +443,68 @@ async function deleteImage(publicId) {
         console.error('Lỗi khi gọi API xóa ảnh:', error);
     }
 }
+async function taoTranDau_chiaBang(teams, danh_sach_doi_hat_dong = [], bangs, random = false) {
+    const url = GlobalStore.getLinkCongApi_taoTranDau() + "/chia-bang";
+
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                teams,
+                danh_sach_doi_hat_dong,
+                bangs,
+                random
+            })
+        });
+
+        if (!res.ok) {
+            throw new Error('Có lỗi xảy ra khi gọi API');
+        }
+
+        return await res.json();
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+        return { error: error.message };
+    }
+}
+
+
+
+// Gọi API vòng tròn
+async function taoTranDau_vongTron(teams) {
+    const url = GlobalStore.getLinkCongApi_taoTranDau() + "/" + "vong-tron";
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teams })
+    });
+    return await res.json();
+}
+
+// Gọi API loại trực tiếp
+async function taoTranDau_loaiTrucTiep(teams, randomize = false) {
+    const url = GlobalStore.getLinkCongApi_taoTranDau() + "/" + "loai-truc-tiep";
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teams, randomize })
+    });
+    return await res.json();
+}
+async function getHinhThucTaoDoi() {
+    const url = GlobalStore.getLinkCongApi_taoTranDau();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log("Kết quả:", data);
+        return data;
+    } catch (error) {
+        console.error("Lỗi gọi API:", error);
+        return null;
+    }
+}
+
 
 
 // lúc mà upload ảnh lên thì public_id không được có khoảng trắng, nó sẽ tự động thay thế bằng dấu gạch dưới
