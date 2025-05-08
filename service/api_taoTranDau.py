@@ -46,30 +46,6 @@ hinh_thuc_tao_doi = {
 }
 
 
-# def chia_thanh_bang(danh_sach_doi, danh_sach_bang, ngau_nhien=False):
-#     # lấy ra sô lượng bảng
-#     so_bang = len(danh_sach_bang)
-#     if ngau_nhien:
-#         random.shuffle(danh_sach_doi)
-
-#     tong_doi = len(danh_sach_doi)
-#     doi_moi_bang = tong_doi // so_bang
-#     du = tong_doi % so_bang
-
-#     danh_sach_bang = []
-#     start = 0
-
-#     for i in range(so_bang):
-#         so_doi_trong_bang = doi_moi_bang + (1 if i == so_bang - 1 and du != 0 else 0)
-#         bang = danh_sach_doi[start:start + so_doi_trong_bang]
-#         danh_sach_bang.append({
-#             "bang": danh_sach_bang[i],  # A, B, C,...
-#             "doi": bang
-#         })
-#         start += so_doi_trong_bang
-
-#     return danh_sach_bang
-
 def chia_thanh_bang(danh_sach_doi, danh_sach_doi_hatDong, danh_sach_bang, ngau_nhien=False):
     so_bang = len(danh_sach_bang)
 
