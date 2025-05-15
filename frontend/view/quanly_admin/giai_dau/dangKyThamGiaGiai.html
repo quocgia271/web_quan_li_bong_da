@@ -88,8 +88,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH YÊU CẦU THAM GIA
-                        <button id="button_xemTD_sap_dien_ra" class="btn btn-primary float-end">Trận đấu sắp diễn
-                            ra</button>
+                        <button id="button_xemTD_sap_dien_ra" class="btn btn-primary float-end">Xem Yêu Cầu Gửi</button>
                         <!-- <button id="button_chua_kq" class="btn btn-danger float-end me-2">Trận đấu chưa kết quá</button> -->
                     </div>
 
@@ -175,6 +174,32 @@
                 <button id="closePopup" class="btn btn-secondary">Đóng</button>
             </div>
         </div>
+
+        <!-- Overlay hiển thị danh sách cầu thủ -->
+        <div id="overlayCauThu" class="overlay hidden">
+            <div class="popup-content">
+                <h3 id="value_thongTinCT">Danh sách Cầu Thủ</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Số Áo</th>
+                            <th>Vị Trí</th>
+                            <th>Hình Ảnh</th>
+                            <th>Cầu Thủ Tham Gia</th>
+                        </tr>
+                    </thead>
+                    <tbody id="playerListBody">
+                        <!-- Dữ liệu sẽ được thêm bằng JS -->
+                    </tbody>
+                </table>
+                <div class="text-end mt-3">
+                    <button id="backToPopup" class="btn btn-secondary">Quay lại</button>
+                </div>
+            </div>
+        </div>
+
+
         <style>
             /* Bảng ẩn mặc định */
             /* Kiểm tra xem lớp hidden có áp dụng đúng hay không */

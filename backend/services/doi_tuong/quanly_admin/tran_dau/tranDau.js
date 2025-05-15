@@ -496,14 +496,14 @@ function handleXepLich(event) {
         // console.log(vongDauTruocDiv);
         const vongDauTruocDiv = document.getElementById("vongDauTruocContainer");
         const danhSachBangContainer = document.getElementById("danhSachBangContainer");
-        
+
         // Kiểm tra giá trị của hình thức tạo trận
         if (document.getElementById("chon_hinhThuc_tao_tran").value === "chia-bang") {
             // Ẩn vòng đấu trước
             vongDauTruocDiv.style.display = "none";
             danhSachBangContainer.style.display = "block";
-                
-            
+
+
 
 
         } else {
@@ -525,19 +525,19 @@ function handleXepLich(event) {
     document.getElementById("button_tao_tran").addEventListener("click", function () {
         // Làm mờ popupOverlay
         document.getElementById("popupOverlay").classList.add("disabled-overlay");
-    
+
         // Xóa nội dung bảng tạo trận
         const tbody = document.getElementById("bodyBangTaoTran");
         tbody.innerHTML = '';
-    
+
         // Gọi hàm tạo trận đấu
         taoTranDau(document.getElementById("chon_hinhThuc_tao_tran").value);
-    
-        
-           
-    
+
+
+
+
     });
-    
+
 
 
     document.getElementById("button_chon_tat_ca").addEventListener("click", function (e) {
@@ -553,13 +553,12 @@ function handleXepLich(event) {
 // chỉ cần có hình thức thì nó làm được hết
 async function taoTranDau(hinhThucTaoTran) {
 
-    // Lắng nghe sự kiện click vào nút đóng
-    document.getElementById("btnCloseBangTaoTran").addEventListener("click", function () {
+    document.getElementById("btnCloseBangTaoTran").addEventListener("click", function (event) {
+        event.preventDefault(); // Ngăn không cho reload trang
         document.getElementById("bangTaoTran").classList.add("hidden"); // Ẩn thẻ <div id="bangTaoTran">
         document.getElementById("popupOverlay").classList.remove("disabled-overlay");
-    
-
     });
+
     // Hiển thị bảng tạo trận đấu
     console.log("Hình thưc tạo trận đấu: " + hinhThucTaoTran);
     if (hinhThucTaoTran === "chia-bang") {
@@ -688,8 +687,8 @@ async function taoTranDau(hinhThucTaoTran) {
 
 
         view_danhSachTranDau_duocTao(danhSach_LichThiDauTuDong);
-          // Bắt sự kiện khi thay đổi ngày
-          document.getElementById("chon_ngayBatDau").addEventListener("change", async function () {
+        // Bắt sự kiện khi thay đổi ngày
+        document.getElementById("chon_ngayBatDau").addEventListener("change", async function () {
             //let danhSachSan = ['Sân 1', 'Sân 2', 'Sân 3']; // Các sân có sẵn
             const ngayBatDau = document.getElementById("chon_ngayBatDau").value; // Ngày bắt đầu từ input
             const gioBatDau = document.getElementById("chon_gioBatDau").value; // Giờ bắt đầu từ input
@@ -739,8 +738,8 @@ async function taoTranDau(hinhThucTaoTran) {
         view_danhSachTranDau_duocTao(danhSach_LichThiDauTuDong);
 
 
-          // Bắt sự kiện khi thay đổi ngày
-          document.getElementById("chon_ngayBatDau").addEventListener("change", async function () {
+        // Bắt sự kiện khi thay đổi ngày
+        document.getElementById("chon_ngayBatDau").addEventListener("change", async function () {
             //let danhSachSan = ['Sân 1', 'Sân 2', 'Sân 3']; // Các sân có sẵn
             const ngayBatDau = document.getElementById("chon_ngayBatDau").value; // Ngày bắt đầu từ input
             const gioBatDau = document.getElementById("chon_gioBatDau").value; // Giờ bắt đầu từ input
@@ -944,7 +943,7 @@ async function handleSelectionChange() {
     if (maGiaiDau.value !== "All") {
         // mặc định là tất cả
         if (maVongDau.value == "All" || document.getElementById("chon_hinhThuc_tao_tran").value === "chia-bang") {
-            console.log(document.getElementById("chon_hinhThuc_tao_tran").value );
+            console.log(document.getElementById("chon_hinhThuc_tao_tran").value);
             data_doiBong_giaiDau = data_doiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau.value);
             console.log(data_doiBong_giaiDau);
             viewTbody_chon(data_doiBong_giaiDau);
@@ -996,7 +995,7 @@ async function lay_data_doiBong_vong_giaiDau(maGiaiDau, maVongDau) {
 // còn trường hợp click vào loại thì chưa được
 async function viewTbody_chon(data_doiBong_giaiDau) {
     const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];
-   // console.log(data_doiBong_giaiDau);
+    // console.log(data_doiBong_giaiDau);
 
     tableBody.innerHTML = ""; // Xóa dữ liệu hiện tại
 
@@ -1080,62 +1079,6 @@ async function loadDanhSach_hinhThuc_xepTranDau() {
 }
 
 
-
-// async function tinhDiem_vongLoai_(list_maDoiBong, maGiaiDau, maVongDau) {
-
-//     const data_tranDau = await hamChung.layDanhSach("tran_dau");
-//     const data_kqTranDau = await hamChung.layDanhSach("ket_qua_tran_dau");
-//     // Lọc ra các trận đấu theo điều kiện
-//     // Lọc ra các trận đấu thuộc giải đang chọn
-//     console.log(maGiaiDau);
-//     let data_tranDau_thuoc_vongDaugiaiDau = data_tranDau.filter(tran =>
-//         tran.ma_giai_dau === maGiaiDau &&
-//         tran.ma_vong_dau === maVongDau
-//     );
-//     if (maVongDau === "All") {
-//         data_tranDau_thuoc_vongDaugiaiDau = data_tranDau.filter(tran =>
-//             tran.ma_giai_dau === maGiaiDau
-//         );
-//     }
-//     console.log(data_tranDau_thuoc_vongDaugiaiDau);
-//     console.log("Danh sách đội bóng tham gia vòng_giải đó:", list_maDoiBong);
-
-//     let data_kqtranDau_thuoc_vongDaugiaiDau = [];
-
-//     for (const tran of data_tranDau_thuoc_vongDaugiaiDau) {
-//         const kq = await hamChung.layThongTinTheo_ID("ket_qua_tran_dau", tran.ma_tran_dau);
-//         console.log(kq);
-//         if (kq) {
-//             data_kqtranDau_thuoc_vongDaugiaiDau.push(kq);
-//         }
-//     }
-//     console.log(data_kqtranDau_thuoc_vongDaugiaiDau);
-//     let soTranThang = {};
-
-//     for (const maDoi of list_maDoiBong) {
-//         soTranThang[maDoi] = data_kqtranDau_thuoc_vongDaugiaiDau.filter(
-//             kq => kq.ma_doi_thang === maDoi
-//         ).length;
-//     }
-
-//     console.log("Số trận thắng của từng đội:", soTranThang);
-//     const sapXepTranThang = sapXepTranThangTheoDiem(soTranThang);
-//     console.log("sắp xêp", sapXepTranThang);
-//     return sapXepTranThang;
-// }
-
-// function sapXepTranThangTheoDiem(soTranThang) {
-//     // Chuyển object thành mảng và sắp xếp theo số trận thắng (giảm dần)
-//     const danhSachXepHang = Object.entries(soTranThang)
-//         .sort((a, b) => b[1] - a[1])  // Sắp xếp theo số trận thắng (decreasing)
-//         .map(([maDoi, soThang], index) => ({
-//             hang: index + 1,
-//             ma_doi_bong: maDoi,
-//             so_tran_thang: soThang
-//         }));
-
-//     return danhSachXepHang;
-// }
 
 function getSelectedCheckboxes() {
     const checkboxes = document.querySelectorAll('.checkbox-chon'); // Lấy tất cả các checkbox

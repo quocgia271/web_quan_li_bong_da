@@ -334,14 +334,14 @@
 
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm_chon">
-                       
+
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
                             <select class="form-control" id="maGiaiDau_chon" required>
                                 <option value="All">Tất Cả</option>
                             </select>
                         </div>
-                       
+
                         <div class="col-md-4">
                             <label class="font-weight-bold">Chọn Hình Thức Tạo</label>
                             <select path="chon_hinhThuc_tao_tran" class="form-control" id="chon_hinhThuc_tao_tran">
@@ -382,18 +382,19 @@
                     <button id="button_chon_tat_ca" class="btn btn-success">Chọn Tất Cả</button>
                     <button id="button_tao_tran" class="btn btn-success">Tạo Trận</button>
 
-                    <button id="closePopup" class="btn btn-secondary">Đóng</button>
+                    <!-- <button id="closePopup" class="btn btn-secondary"><Đóng/button> -->
+                    <button id="closePopup" class="btn btn-danger " style="margin-top: 0;">Đóng</button>
                 </div>
                 <!-- Popup xác nhận -->
-                <div id="confirmModal" class="overlay hidden">
-                    <div class="popup-content text-center">
+                <!-- <div id="confirmModal" class="overlay hidden">
+                    <div class="popup-content text-center" >
                         <p>Bạn có chắc chắn muốn duyệt tất cả không?</p>
                         <button id="confirmYes" class="btn btn-success m-2">Có</button>
                         <button id="confirmNo" class="btn btn-danger m-2">Không</button>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card mb-4">
+                <div class="card mb-4" style="padding-top: 10px;">
                     <table id="dataTable_chon">
                         <thead>
                             <tr>
@@ -443,6 +444,8 @@
                 </div>
                 <div class="col-md-4">
                     <button id="bt_luuDanhSachTranDau_tuDong" type="button" class="btn btn-success">Lưu kết quả</button>
+                    <!-- <button id="btnCloseBangTaoTran" class="btn btn-danger btn-sm float-right">Đóng</button> -->
+                    <button id="btnCloseBangTaoTran" class="btn btn-danger float-end me-2">Đóng</button>
                 </div>
             </form>
 
@@ -465,7 +468,6 @@
                 </table>
             </div>
 
-            <button id="btnCloseBangTaoTran" class="btn btn-danger btn-sm float-right">Đóng</button>
 
         </div>
 
@@ -481,12 +483,13 @@
                 z-index: 1100;
                 /* Đảm bảo bảng này luôn ở trên cùng */
             }
+
             /* CSS để làm mờ và ngăn tương tác */
-.disabled-overlay {
-    filter: blur(2px);
-    pointer-events: none;
-    opacity: 0.6;
-}
+            .disabled-overlay {
+                filter: blur(2px);
+                pointer-events: none;
+                opacity: 0.6;
+            }
 
 
             #popupOverlay {
