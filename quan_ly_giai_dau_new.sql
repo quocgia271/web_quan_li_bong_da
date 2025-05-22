@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 15, 2025 lúc 06:31 AM
+-- Thời gian đã tạo: Th5 20, 2025 lúc 11:36 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -41,6 +41,7 @@ INSERT INTO `bang_dau` (`ma_bang_dau`, `ten_bang_dau`, `ma_giai_dau`) VALUES
 ('bd_0001', 'bảng c cho aa', 'gd_0001'),
 ('bd_0002', '111d1', 'gd_0001'),
 ('bd_0003', '111d', 'gd_0001'),
+('bd_0004', 'Bảng 4', 'gd_0001'),
 ('BD01', 'Bảng A - GD01', 'GD01'),
 ('BD02', 'Bảng B - GD01', 'GD01'),
 ('BD03', 'Bảng C - GD01', 'GD01'),
@@ -57,12 +58,24 @@ CREATE TABLE `bang_xep_hang_vong_loai` (
   `ma_doi_bong` varchar(255) NOT NULL,
   `ma_bang_dau` varchar(255) NOT NULL,
   `diem` int(11) DEFAULT 0,
-  `so_tran_thang` int(11) DEFAULT 0,
-  `so_tran_hoa` int(11) DEFAULT 0,
-  `so_tran_thua` int(11) DEFAULT 0,
-  `ban_thang` int(11) DEFAULT 0,
-  `ban_thua` int(11) DEFAULT 0
+  `ghi_chu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `bang_xep_hang_vong_loai`
+--
+
+INSERT INTO `bang_xep_hang_vong_loai` (`ma_doi_bong`, `ma_bang_dau`, `diem`, `ghi_chu`) VALUES
+('DB01', 'bd_0001', 1, NULL),
+('DB01', 'BD01', 10, NULL),
+('DB02', 'bd_0001', 1, NULL),
+('DB02', 'BD01', 100, NULL),
+('DB02', 'BD02', 110, NULL),
+('DB02', 'BD03', 5, NULL),
+('DB03', 'bd_0001', 14, NULL),
+('DB03', 'bd_0002', 102, NULL),
+('DB06', 'bd_0001', 1, NULL),
+('DB06', 'bd_0002', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -122,12 +135,23 @@ CREATE TABLE `cau_thu_giai_dau` (
 --
 
 INSERT INTO `cau_thu_giai_dau` (`ma_cau_thu`, `ma_giai_dau`, `ma_doi_bong`, `ho_ten`, `so_ao`, `hinh_anh`, `ma_vi_tri`) VALUES
-('ct_0002', 'gd_0004', 'db_0001', 'lê văn tiến', 12, '111.png', 'RWB'),
-('ct_0003', 'GD01', 'db_0003', 'ttttt', 3, 'Screenshot_2025-01-11_214856.png', 'RB'),
-('CT01', 'GD01', 'DB01', 'Lê Văn Tiến 1', 1, 'tien.png', 'CB'),
-('CT01', 'GD02', 'DB01', 'Lê Văn Tiến 1', 1, '', 'CB'),
-('CT03', 'GD01', 'db_0003', 'Quế Ngọc Hải', 3, NULL, 'CB'),
-('CT05', 'gd_0001', 'DB03', 'Nguyễn Công Phượng', 10, 'Screenshot_2025-01-11_214856.png', 'CF');
+('ct_0001', 'gd_0003', 'db_0003', 'lê văn tiến11', 8, 'Screenshot_2024-06-07_101114.png', 'RWB'),
+('ct_0001', 'GD01', 'db_0003', 'lê văn tiến11', 8, 'Screenshot_2024-06-07_101114.png', 'RWB'),
+('ct_0002', 'gd_0003', 'db_0003', 'lê văn tiến', 111, 'Screenshot_2025-01-11_214856.png', 'RWB'),
+('ct_0002', 'GD01', 'db_0003', 'lê văn tiến', 111, 'Screenshot_2025-01-11_214856.png', 'RWB'),
+('ct_0003', 'gd_0003', 'db_0003', 'ttttt', 3, 'Screenshot_2025-01-11_214856.png', 'RB'),
+('ct_0004', 'gd_0003', 'db_0003', 'lê văn tiến111', 6, 'z6418754535921_35d72cad7c7e34a996a2b45591bc61bf.jpg', 'GK'),
+('ct_0004', 'GD01', 'db_0003', 'lê văn tiến111', 6, 'z6418754535921_35d72cad7c7e34a996a2b45591bc61bf.jpg', 'GK'),
+('CT01', 'gd_0003', 'db_0003', 'Nguyễn Văn Quyết', 10, 'Screenshot_2025-01-11_214856.png', 'ST'),
+('CT02', 'gd_0003', 'db_0003', 'Đỗ Hùng Dũng', 16, 'Screenshot_2025-01-11_214856.png', 'CM'),
+('CT03', 'gd_0003', 'db_0003', 'Quế Ngọc Hải', 3, NULL, 'CB'),
+('CT04', 'gd_0003', 'db_0003', 'Bùi Tiến Dũng', 4, '4c968875-2e95-466d-b5e3-bd57901f8f71.jpg', 'CB'),
+('CT05', 'gd_0003', 'db_0003', 'Nguyễn Công Phượng', 10, 'Screenshot_2025-01-11_214856.png', 'CF'),
+('CT06', 'gd_0003', 'db_0003', 'Phan Văn Đức', 20, 'Screenshot_2025-01-11_214856.png', 'LW'),
+('CT07', 'gd_0003', 'db_0003', 'Văn Thanh', 17, '222.jpg', 'RB'),
+('CT08', 'gd_0003', 'db_0003', 'Đặng Văn Lâm', 1, '44.png', 'GK'),
+('CT09', 'gd_0003', 'db_0003', 'Hà Đức Chinh', 9, '3333.png', 'ST'),
+('CT10', 'gd_0003', 'db_0003', 'Nguyễn Hoàng Đức', 14, '19_3.png', 'CM');
 
 -- --------------------------------------------------------
 
@@ -159,7 +183,7 @@ INSERT INTO `dang_ky_tham_gia_giai` (`ma_giai_dau`, `ma_doi_bong`, `thoi_gian_da
 ('gd_0001', 'DB07', '2025-04-24 17:00:00', 'Đã duyệt', NULL),
 ('gd_0001', 'DB08', '2025-04-24 17:00:00', 'Từ chối', NULL),
 ('gd_0002', 'DB03', '2025-04-25 01:26:38', 'Chờ duyệt', NULL),
-('gd_0003', 'DB03', '2025-04-25 01:48:21', 'Chờ duyệt', NULL),
+('gd_0003', 'db_0003', '2025-04-25 01:48:21', 'Đã duyệt', NULL),
 ('GD01', 'db_0001', '2025-04-24 17:00:00', 'Đã duyệt', NULL),
 ('GD01', 'db_0002', '2025-04-24 17:00:00', 'Đã duyệt', NULL),
 ('GD01', 'db_0003', '2025-05-08 04:15:18', 'Đã duyệt', NULL),
@@ -170,7 +194,8 @@ INSERT INTO `dang_ky_tham_gia_giai` (`ma_giai_dau`, `ma_doi_bong`, `thoi_gian_da
 ('GD01', 'DB05', '2025-04-24 17:00:00', 'Chờ duyệt', NULL),
 ('GD01', 'DB06', '2025-04-24 17:00:00', 'Đã duyệt', NULL),
 ('GD01', 'DB07', '2025-04-24 17:00:00', 'Chờ duyệt', NULL),
-('GD01', 'DB08', '2025-04-24 17:00:00', 'Chờ duyệt', NULL);
+('GD01', 'DB08', '2025-04-24 17:00:00', 'Chờ duyệt', NULL),
+('GD02', 'db_0003', '2025-05-20 07:15:20', 'Chờ duyệt', NULL);
 
 -- --------------------------------------------------------
 
@@ -192,11 +217,11 @@ CREATE TABLE `doi_bong` (
 --
 
 INSERT INTO `doi_bong` (`ma_doi_bong`, `ten_doi_bong`, `quoc_gia`, `gioi_tinh`, `logo`, `ma_ql_doi_bong`) VALUES
-('db_0001', 'TP.HCM FC', 'Việt Nam', 'nữ', '7e238089a2201e9c336d698b96425f53.jpg', 'ND002'),
-('db_0002', 'TP.HCM FC', 'Việt Nam', 'nam', '', 'ND002'),
+('db_0001', 'TP.HCM FC1', 'Việt Nam', 'nữ', '7e238089a2201e9c336d698b96425f53.jpg', 'ND002'),
+('db_0002', 'TP.HCM FC2', 'Việt Nam', 'nam', '', 'ND002'),
 ('db_0003', 'Lê văn tiến', 'lê văn tiến', 'nữ', '', 'ND002'),
 ('DB01', 'Hà Nội FC', 'Việt Nam', 'nam', 'z6418754535921_35d72cad7c7e34a996a2b45591bc61bf.jpg', 'ND003'),
-('DB02', 'TP.HCM FC', 'Việt Nam', 'nam', 'Screenshot_2025-03-25_100427.png', 'ND002'),
+('DB02', 'TP.HCM FC3', 'Việt Nam', 'nam', 'Screenshot_2025-03-25_100427.png', 'ND002'),
 ('DB03', 'Hoàng Anh Gia Lai', 'Việt Nam', 'nam', '111.png', 'ND002'),
 ('DB04', 'Sông Lam Nghệ An', 'Việt Nam', 'nam', '/logos/slna.png', 'ND002'),
 ('DB05', 'Bình Định FC', 'Việt Nam', 'nam', '/logos/binhdinh.png', NULL),
@@ -225,19 +250,17 @@ CREATE TABLE `doi_bong_giai_dau` (
 --
 
 INSERT INTO `doi_bong_giai_dau` (`ma_doi_bong`, `ma_giai_dau`, `ten_doi_bong`, `logo`, `quoc_gia`, `ma_bang_dau`, `hat_giong`) VALUES
-('db_0001', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'co'),
-('db_0002', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong'),
-('db_0003', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong'),
-('DB01', 'GD01', 'đội bóng 1', 'Screenshot_2025-04-18_094328.png', 'VN', 'BD01', 'co'),
+('db_0001', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', 'BD01', 'co'),
+('db_0002', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', 'BD01', 'co'),
+('DB01', 'GD01', 'đội bóng 1', 'Screenshot_2025-04-18_094328.png', 'VN', 'BD02', 'co'),
 ('DB01', 'GD02', 'đội bóng 1', 'Screenshot_2025-04-18_094929.png', 'VN_number_1', NULL, 'khong'),
-('DB02', 'GD01', 'tiến 1', NULL, 'vvv', NULL, 'co'),
+('DB02', 'GD01', 'tiến 1', NULL, 'vvv', 'BD03', 'co'),
 ('DB02', 'GD02', 'dfsddsfdfsfssdfsdsdf', NULL, 'sdfds', NULL, 'khong'),
-('DB03', 'GD01', 'sdfsfsdf', '', 'vvv', NULL, 'co'),
-('DB04', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong'),
-('DB05', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong'),
-('DB06', 'GD01', 'todfdsfds', NULL, 'vn', NULL, 'khong'),
-('DB07', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong'),
-('DB08', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', NULL, 'khong');
+('DB03', 'GD01', 'sdfsfsdf', '', 'vvv', 'BD01', 'co'),
+('DB04', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', 'BD01', 'khong'),
+('DB05', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', 'BD02', 'khong'),
+('DB06', 'GD01', 'todfdsfds', NULL, 'vn', 'BD02', 'khong'),
+('DB08', 'GD01', 'sdfsdf', NULL, 'vdsfdsfd', 'BD03', 'khong');
 
 -- --------------------------------------------------------
 
@@ -280,7 +303,7 @@ CREATE TABLE `ket_qua_tran_dau` (
   `so_ban_doi_1` int(11) DEFAULT 0,
   `so_ban_doi_2` int(11) DEFAULT 0,
   `ma_doi_thang` varchar(255) DEFAULT NULL,
-  `ghi_chu` varchar(255) DEFAULT NULL
+  `ghi_chu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 --
@@ -288,18 +311,14 @@ CREATE TABLE `ket_qua_tran_dau` (
 --
 
 INSERT INTO `ket_qua_tran_dau` (`ma_tran_dau`, `so_ban_doi_1`, `so_ban_doi_2`, `ma_doi_thang`, `ghi_chu`) VALUES
-('td_0001', 3, 5, 'DB02', 'tdsfsdss'),
+('td_0001', 1, 1, 'DB01', ''),
 ('td_0002', 1, 3, 'DB01', 'df '),
 ('td_0003', 1, 0, 'DB01', 'dsfsdfdsfdsfdsfdsfd long'),
 ('td_0004', 0, 2, 'DB04', 'tdsfsdss'),
 ('td_0008', 6, 5, 'db_0002', ''),
-('TD01', 0, 0, 'DB02', NULL),
 ('td_0007', 1, 3, 'DB05', ''),
 ('td_0005', 6, 5, 'db_0002', ''),
-('td_0009', 3, 4, 'DB01', 'dsfsfsdfds'),
-('td_0010', 3, 4, 'DB01', 'dsfsfsdfds'),
-('td_0011', 3, 4, 'db_0002', 'dsfsfsdfds'),
-('td_0012', 3, 4, 'DB04', 'dsfsfsdfds');
+('td_0014', 2, 2, NULL, 'sdfsdf');
 
 -- --------------------------------------------------------
 
@@ -429,16 +448,14 @@ INSERT INTO `tran_dau` (`ma_tran_dau`, `ma_giai_dau`, `ma_doi_1`, `ma_doi_2`, `n
 ('td_0003', 'GD01', 'DB01', 'DB05', '2025-04-10', '17:15:00', 'SVD001', 'Hoàn tất', 'V1'),
 ('td_0004', 'gd_0001', 'DB01', 'DB04', '2025-04-08', '17:28:00', 'SVD001', 'Hoàn tất', 'V1'),
 ('td_0005', 'gd_0002', 'db_0002', 'db_0002', '2025-04-17', '19:46:00', 'SVD001', 'Hoàn tất', 'V1'),
-('td_0006', 'gd_0002', 'db_0002', 'db_0002', '2025-04-09', '19:46:00', 'SVD001', 'Hoàn tất', 'V1'),
 ('td_0007', 'gd_0004', 'DB05', 'db_0002', '2025-04-17', '19:46:00', 'SVD001', 'Hoàn tất', 'V1'),
 ('td_0008', 'gd_0004', 'db_0002', 'db_0002', '2025-04-09', '19:46:00', 'SVD001', 'Hoàn tất', 'V1'),
 ('td_0009', 'gd_0001', 'db_0001', 'db_0002', '2025-04-09', '19:47:00', 'SVD002', 'Hoàn tất', 'V1'),
 ('td_0010', 'gd_0001', 'db_0001', 'db_0002', '2025-04-09', '19:47:00', 'SVD002', 'Hoàn tất', 'V1'),
-('td_0011', 'gd_0001', 'db_0002', 'db_0001', '2025-04-02', '19:51:00', 'SVD003', 'Hoàn tất', 'V1'),
-('td_0012', 'gd_0001', 'DB04', 'db_0001', '2025-04-15', '12:55:00', 'SVD001', 'Hoàn tất', 'V1'),
-('td_0013', 'gd_0003', 'DB04', 'DB03', '2025-04-30', '19:57:00', 'SVD002', 'Hoàn tất', 'V1'),
-('td_0014', 'GD01', 'DB02', 'DB03', '2025-04-18', '08:38:00', 'SVD001', 'Hoàn tất', 'V1'),
-('TD01', 'GD02', 'DB03', 'DB04', '2025-07-10', '15:30:00', 'SVD001', 'Hoàn tất', 'V1');
+('td_0011', 'GD01', 'db_0002', 'DB01', '2025-05-20', '09:30:00', 'SVD001', 'Chưa diễn ra', 'V4'),
+('td_0012', 'GD01', 'DB04', 'DB05', '2025-05-20', '09:30:00', 'SVD003', 'Chưa diễn ra', 'V4'),
+('td_0013', 'GD01', 'DB06', 'DB08', '2025-05-20', '11:30:00', 'SVD001', 'Chưa diễn ra', 'V4'),
+('td_0014', 'GD01', 'DB02', 'DB03', '2025-05-20', '09:30:00', 'SVD002', 'Chưa diễn ra', 'V4');
 
 -- --------------------------------------------------------
 
@@ -482,7 +499,11 @@ CREATE TABLE `trong_tai_tran_dau` (
 
 INSERT INTO `trong_tai_tran_dau` (`ma_tran_dau`, `ma_trong_tai`, `ma_loai_trong_tai`) VALUES
 ('td_0001', 'TT01', 'LT01'),
-('td_0001', 'TT02', 'LT02');
+('td_0007', 'TT02', 'LT01'),
+('td_0001', 'TT03', 'LT02'),
+('td_0001', 'TT04', 'LT03'),
+('td_0001', 'TT02', 'LT04'),
+('td_0009', 'TT03', 'LT04');
 
 -- --------------------------------------------------------
 
